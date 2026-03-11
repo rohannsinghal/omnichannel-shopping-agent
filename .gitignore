@@ -1,0 +1,11 @@
+# Python virtual environment
+venv/
+
+# Python cache files
+__pycache__/
+
+# Environment variables (for when we add API keys later)
+.env
+
+# Mac system files
+.DS_Store
