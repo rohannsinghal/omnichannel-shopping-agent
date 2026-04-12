@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Bag | The Body Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#004236',
+            'brand-light': '#005a48',
+            'brand-pale': '#e8f0ee',
+            cream: '#faf8f5',
+            'warm-gray': '#f5f2ef',
+          },
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'serif'],
+            sans: ['Jost', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: #faf8f5; }
+
+    /* Promo bar ticker */
+    .ticker-wrap { overflow: hidden; }
+    .ticker { display: flex; gap: 3rem; animation: ticker 28s linear infinite; white-space: nowrap; }
+    .ticker:hover { animation-play-state: paused; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* Navbar */
+    .navbar-glass {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(250, 248, 245, 0.92);
+      border-bottom: 1px solid rgba(0,66,54,0.08);
+    }
+
+    /* FAB */
+    .fab-btn { box-shadow: 0 8px 32px rgba(0,66,54,0.38); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .fab-btn:hover { transform: scale(1.08); box-shadow: 0 12px 40px rgba(0,66,54,0.45); }
+
+    /* Copilot Side Drawer */
+    #copilotDrawer {
+      width: 450px;
+      max-width: 100vw;
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @media (max-width: 480px) {
+      #copilotDrawer { width: 100vw; }
+    }
+    #copilotDrawer.drawer-closed { transform: translateX(100%); }
+    #copilotDrawer.drawer-open  { transform: translateX(0); }
+
+    /* Drawer overlay */
+    #drawerOverlay {
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      opacity: 0;
+    }
+    #drawerOverlay.overlay-visible {
+      pointer-events: auto;
+      opacity: 1;
+    }
+
+    /* Modal */
+    .modal-backdrop { transition: opacity 0.25s ease; }
+    .modal-box { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease; }
+    .modal-backdrop.hidden { display: none; }
+
+    /* Input focus */
+    .field-input:focus { outline: none; border-color: #004236; box-shadow: 0 0 0 3px rgba(0,66,54,0.12); }
+
+    /* Chat messages */
+    .chat-messages { scroll-behavior: smooth; }
+    .msg-bot { animation: slideInLeft 0.3s ease; }
+    .msg-user { animation: slideInRight 0.3s ease; }
+    @keyframes slideInLeft { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+    @keyframes slideInRight { from { opacity:0; transform:translateX(10px); } to { opacity:1; transform:none; } }
+
+    /* Btn primary */
+    .btn-primary { transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+    .btn-primary:hover { background: #005a48; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,66,54,0.3); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* Btn outline */
+    .btn-outline { transition: background 0.2s, color 0.2s, transform 0.15s; }
+    .btn-outline:hover { background: #004236; color: #fff; transform: translateY(-1px); }
+
+    /* Nav links */
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:#004236; transition: width 0.25s ease; }
+    .nav-link:hover::after { width:100%; }
+
+    /* Search bar */
+    .search-bar:focus { outline:none; border-color:#004236; }
+
+    /* Footer links */
+    .footer-link { transition: color 0.2s, padding-left 0.2s; }
+    .footer-link:hover { color:#fff; padding-left: 4px; }
+
+    /* Typing dots */
+    .typing-dot { animation: typingBounce 1.2s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce { 0%,60%,100% { transform:translateY(0); } 30% { transform:translateY(-5px); } }
+
+    /* Scrollbar for drawer messages */
+    #chatMessages::-webkit-scrollbar { width: 4px; }
+    #chatMessages::-webkit-scrollbar-track { background: transparent; }
+    #chatMessages::-webkit-scrollbar-thumb { background: rgba(0,66,54,0.18); border-radius: 4px; }
+
+    /* GlowBot AI sparkle badge */
+    .glowbot-badge {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* Google Sign-In button */
+    .google-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 11px 16px; border: 1.5px solid #e5e7eb; border-radius: 12px;
+      background: #fff; font-family: 'Jost', sans-serif; font-size: 0.875rem;
+      font-weight: 500; color: #374151; cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .google-btn:hover { background: #f9fafb; border-color: #d1d5db; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .or-divider {
+      display: flex; align-items: center; gap: 12px; color: #9ca3af;
+      font-size: 0.75rem; font-family: 'Jost', sans-serif;
+      letter-spacing: 0.05em; text-transform: uppercase; margin: 4px 0;
+    }
+    .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+
+    /* ── Cart-specific styles ── */
+    .cart-item { transition: box-shadow 0.25s ease, transform 0.25s ease; }
+    .cart-item:hover { box-shadow: 0 8px 28px rgba(0,66,54,0.09); transform: translateY(-1px); }
+
+    .qty-btn { transition: background 0.18s, color 0.18s, transform 0.15s; }
+    .qty-btn:hover { background: #004236; color: #fff; transform: scale(1.1); }
+    .qty-btn:active { transform: scale(0.95); }
+
+    .remove-btn { transition: color 0.2s, transform 0.2s; }
+    .remove-btn:hover { color: #dc2626; transform: scale(1.15); }
+
+    .summary-card {
+      background: #fff; border-radius: 1.5rem;
+      box-shadow: 0 4px 32px rgba(0,66,54,0.10), 0 1px 4px rgba(0,66,54,0.05);
+    }
+
+    .checkout-btn {
+      background: #004236;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .checkout-btn:hover { background: #005a48; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,66,54,0.32); }
+    .checkout-btn:active { transform: translateY(0); }
+
+    /* Product image placeholder gradient */
+    .img-placeholder {
+      background: linear-gradient(135deg, #e8f0ee 0%, #d1e6e0 50%, #e8f0ee 100%);
+      background-size: 200% 200%;
+      animation: shimmer 2.5s infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Empty state */
+    .empty-bag-icon { animation: float 3s ease-in-out infinite; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    /* Divider row in summary */
+    .summary-divider { border-top: 1px dashed rgba(0,66,54,0.12); }
+
+    /* Sticky summary */
+    @media (min-width: 1024px) {
+      .sticky-summary { position: sticky; top: 88px; }
+    }
+
+    /* Product image in cart item */
+    .cart-product-img { width: 100%; height: 100%; object-fit: cover; border-radius: 0.75rem; }
+  </style>
+</head>
+<body class="bg-cream text-gray-800">
+
+<!-- ═══════════════════════════════════════════════════
+     PROMO BAR
+     FIX (Bug 8): Changed ₹999 → ₹2000 to match math logic
+═══════════════════════════════════════════════════ -->
+<div class="bg-brand text-white text-xs py-2.5 overflow-hidden ticker-wrap">
+  <div class="ticker">
+    <span>✦ FREE SHIPPING ON ORDERS OVER ₹2000</span>
+    <span>✦ CRUELTY FREE &amp; 100% VEGETARIAN</span>
+    <span>✦ ETHICALLY SOURCED INGREDIENTS WORLDWIDE</span>
+    <span>✦ EARN LOVE YOUR BODY™ REWARDS ON EVERY PURCHASE</span>
+    <span>✦ NEW: HEMP COLLECTION — DEEPLY NOURISHING</span>
+    <span>✦ FREE SHIPPING ON ORDERS OVER ₹2000</span>
+    <span>✦ CRUELTY FREE &amp; 100% VEGETARIAN</span>
+    <span>✦ ETHICALLY SOURCED INGREDIENTS WORLDWIDE</span>
+    <span>✦ EARN LOVE YOUR BODY™ REWARDS ON EVERY PURCHASE</span>
+    <span>✦ NEW: HEMP COLLECTION — DEEPLY NOURISHING</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════ -->
+<header id="navbar" class="sticky top-0 z-50 navbar-glass">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center gap-6">
+
+    <a href="index.html" class="flex-shrink-0 flex items-center gap-2.5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" width="180" height="46" aria-label="The Body Shop">
+        <rect x="0" y="0" width="220" height="56" rx="4" fill="#004236"/>
+        <g transform="translate(14, 10)">
+          <ellipse cx="8" cy="18" rx="5" ry="9" fill="none" stroke="#fff" stroke-width="1.4" transform="rotate(-30 8 18)"/>
+          <ellipse cx="8" cy="18" rx="5" ry="9" fill="none" stroke="#fff" stroke-width="1.4" transform="rotate(30 8 18)"/>
+          <ellipse cx="8" cy="18" rx="5" ry="9" fill="none" stroke="#fff" stroke-width="1.4"/>
+          <circle cx="8" cy="18" r="2.2" fill="#fff"/>
+        </g>
+        <text x="44" y="22" font-family="'Cormorant Garamond', Georgia, serif" font-size="14" font-weight="600" fill="#ffffff" letter-spacing="1.5">THE BODY SHOP</text>
+        <text x="44" y="37" font-family="'Jost', Arial, sans-serif" font-size="7.5" font-weight="400" fill="rgba(255,255,255,0.6)" letter-spacing="2.5">EST. 1976 · AGAINST ANIMAL TESTING</text>
+      </svg>
+    </a>
+
+    <!-- Nav links (desktop) -->
+    <nav class="hidden lg:flex items-center gap-7 ml-6">
+      <a href="shop.html?category=Skincare" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Skincare</a>
+      <a href="shop.html?category=Body%20Care" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Body</a>
+      <a href="shop.html?category=Hair%20Care" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Hair</a>
+      <a href="shop.html?category=Fragrance" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Fragrance</a>
+      <a href="shop.html?category=Gifts%20%26%20Sets" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Gifts</a>
+      <a href="shop.html?sale=true" class="nav-link text-sm font-medium text-brand font-semibold transition-colors">Sale</a>
+    </nav>
+
+    <div class="flex-1"></div>
+
+    <!-- Search -->
+    <div class="hidden md:flex items-center bg-warm-gray rounded-full px-4 py-2 gap-2 w-64 border border-transparent hover:border-brand/20 transition-colors">
+      <i class="fa fa-search text-brand/50 text-sm"></i>
+      <input id="globalSearch" type="text" placeholder="Search products…" class="search-bar bg-transparent text-sm flex-1 border-none font-sans placeholder:text-gray-400" />
+    </div>
+
+    <!-- Icons -->
+    <div class="flex items-center gap-4 ml-2">
+      <button id="openAuthModal" class="relative group flex flex-col items-center" aria-label="Account">
+        <i class="fa fa-user text-brand text-lg group-hover:scale-110 transition-transform"></i>
+        <span id="navAccountLabel" class="text-[9px] text-brand/60 font-sans mt-0.5 hidden lg:block">Account</span>
+      </button>
+      <a href="cart.html" class="relative group flex flex-col items-center" aria-label="Cart">
+        <span class="relative">
+          <i class="fa fa-shopping-bag text-brand text-lg group-hover:scale-110 transition-transform"></i>
+          <span id="cartCount" class="absolute -top-2 -right-2 bg-brand text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </span>
+        <span class="text-[9px] text-brand/60 font-sans mt-0.5 hidden lg:block">Bag</span>
+      </a>
+      <button class="lg:hidden text-brand ml-1" aria-label="Menu">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════
+     CART PAGE — MAIN CONTENT
+═══════════════════════════════════════════════════ -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-10 pb-20">
+
+  <!-- Page header -->
+  <div class="mb-8">
+    <p class="text-xs text-brand/50 tracking-[0.3em] uppercase font-sans font-medium mb-1">
+      <a href="index.html" class="hover:text-brand transition-colors">Home</a>
+      <span class="mx-2">/</span>Your Bag
+    </p>
+    <h1 class="font-serif text-4xl md:text-5xl font-light text-brand">Your Bag</h1>
+    <div class="w-12 h-px bg-brand/30 mt-3"></div>
+  </div>
+
+  <!-- 2-column grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+    <!-- ── LEFT COLUMN: Cart Items ─────────────────────── -->
+    <div class="lg:col-span-2">
+
+      <!-- Trust badges strip -->
+      <div class="flex flex-wrap items-center gap-4 mb-6 py-3.5 px-5 bg-brand-pale rounded-2xl">
+        <span class="flex items-center gap-1.5 text-xs text-brand font-sans font-medium">
+          <i class="fa fa-leaf text-brand/60 text-[11px]"></i> Cruelty-Free
+        </span>
+        <span class="w-px h-3.5 bg-brand/20"></span>
+        <span class="flex items-center gap-1.5 text-xs text-brand font-sans font-medium">
+          <i class="fa fa-truck text-brand/60 text-[11px]"></i> Free shipping over ₹2000
+        </span>
+        <span class="w-px h-3.5 bg-brand/20"></span>
+        <span class="flex items-center gap-1.5 text-xs text-brand font-sans font-medium">
+          <i class="fa fa-rotate-left text-brand/60 text-[11px]"></i> Easy 30-day returns
+        </span>
+      </div>
+
+      <!-- Cart items container — populated by JS -->
+      <div id="cartItemsContainer" class="space-y-4"></div>
+
+    </div>
+
+    <!-- ── RIGHT COLUMN: Order Summary ────────────────── -->
+    <div class="lg:col-span-1">
+      <div class="summary-card p-6 sticky-summary" id="orderSummaryCard">
+
+        <!-- Header -->
+        <h2 class="font-serif text-2xl font-semibold text-brand mb-1">Order Summary</h2>
+        <div class="w-8 h-px bg-brand/30 mb-6"></div>
+
+        <!-- Summary rows -->
+        <div class="space-y-3.5 text-sm font-sans">
+
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500">Subtotal</span>
+            <span id="summarySubtotal" class="font-medium text-gray-800">₹0</span>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500 flex items-center gap-1.5">
+              Shipping
+              <span id="freeShippingBadge" class="hidden text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-medium">FREE</span>
+            </span>
+            <span id="summaryShipping" class="font-medium text-gray-800">₹100</span>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <span class="text-gray-500">
+              Est. Tax
+              <span class="text-[10px] text-gray-400 ml-1">(18% GST)</span>
+            </span>
+            <span id="summaryTax" class="font-medium text-gray-800">₹0</span>
+          </div>
+
+          <!-- Promo code field -->
+          <div class="summary-divider pt-4 mt-2">
+            <div class="flex gap-2">
+              <input
+                type="text"
+                id="promoInput"
+                placeholder="Promo code"
+                class="flex-1 field-input bg-warm-gray text-sm px-4 py-2.5 rounded-full border border-gray-200 font-sans placeholder:text-gray-400"
+              />
+              <button
+                onclick="applyPromo()"
+                class="btn-outline border border-brand text-brand text-xs font-medium tracking-wider px-5 py-2.5 rounded-full whitespace-nowrap">
+                Apply
+              </button>
+            </div>
+            <p id="promoMsg" class="text-[11px] mt-2 ml-1 hidden"></p>
+          </div>
+
+          <!-- Total -->
+          <div class="summary-divider pt-4 mt-2">
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-gray-900 text-base">Total</span>
+              <span id="summaryTotal" class="font-semibold text-brand text-xl font-serif">₹0</span>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-1 font-sans">Inclusive of all taxes</p>
+          </div>
+        </div>
+
+        <!--
+          FIX (Bug 9): "Proceed to Checkout" is now a <button> with a click
+          listener. If the user is not logged in, it prevents navigation and
+          calls openModal() to force login first.
+        -->
+        <button
+          id="checkoutBtn"
+          class="checkout-btn mt-7 w-full text-white text-sm font-medium tracking-widest uppercase py-4 rounded-full gap-3 shadow-md opacity-50 pointer-events-none"
+          aria-disabled="true">
+          <i class="fa fa-lock text-xs"></i>
+          Proceed to Checkout
+        </button>
+
+        <!-- Secure payment note -->
+        <div class="flex items-center justify-center gap-2 mt-4 text-[10px] text-gray-400 font-sans">
+          <i class="fa fa-shield-halved text-brand/40 text-sm"></i>
+          Secure &amp; encrypted checkout
+        </div>
+        <div class="flex justify-center items-center gap-2.5 mt-3">
+          <i class="fa-brands fa-cc-visa text-gray-300 text-xl"></i>
+          <i class="fa-brands fa-cc-mastercard text-gray-300 text-xl"></i>
+          <i class="fa-brands fa-cc-amex text-gray-300 text-xl"></i>
+          <i class="fa-brands fa-cc-paypal text-gray-300 text-xl"></i>
+          <i class="fa-brands fa-google-pay text-gray-300 text-xl"></i>
+        </div>
+
+        <!-- Continue shopping link -->
+        <div class="text-center mt-5">
+          <a href="shop.html" class="text-xs text-brand/60 hover:text-brand font-sans transition-colors underline underline-offset-2">
+            ← Continue Shopping
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- ── You Might Also Love ── -->
+  <div class="mt-16">
+    <p class="font-serif text-2xl font-light text-brand mb-1">You Might Also Love</p>
+    <div class="w-8 h-px bg-brand/30 mb-6"></div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <a href="product.html?id=TBS_010" class="bg-white rounded-2xl overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow duration-300 block">
+        <div class="aspect-square overflow-hidden bg-brand-pale">
+          <img src="./products/TBS_010.jpg" alt="Tea Tree Pore Minimiser Serum" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.parentElement.classList.add('img-placeholder'); this.style.display='none';" />
+        </div>
+        <div class="p-4">
+          <p class="text-[10px] text-brand/50 uppercase tracking-wider mb-0.5">Tea Tree</p>
+          <p class="font-serif text-base font-semibold text-gray-800 leading-snug">Pore Minimiser Serum</p>
+          <p class="text-brand font-medium text-sm mt-1.5">₹1,995</p>
+        </div>
+      </a>
+      <a href="product.html?id=TBS_006" class="bg-white rounded-2xl overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow duration-300 block">
+        <div class="aspect-square overflow-hidden bg-brand-pale">
+          <img src="./products/TBS_006.jpg" alt="Vitamin C Glow Boosting Moisturiser" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.parentElement.classList.add('img-placeholder'); this.style.display='none';" />
+        </div>
+        <div class="p-4">
+          <p class="text-[10px] text-brand/50 uppercase tracking-wider mb-0.5">Vitamin C</p>
+          <p class="font-serif text-base font-semibold text-gray-800 leading-snug">Glow Boosting Moisturiser</p>
+          <p class="text-brand font-medium text-sm mt-1.5">₹2,695</p>
+        </div>
+      </a>
+      <a href="product.html?id=TBS_027" class="bg-white rounded-2xl overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow duration-300 block">
+        <div class="aspect-square overflow-hidden bg-brand-pale">
+          <img src="./products/TBS_027.jpg" alt="Moringa Body Butter" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.parentElement.classList.add('img-placeholder'); this.style.display='none';" />
+        </div>
+        <div class="p-4">
+          <p class="text-[10px] text-brand/50 uppercase tracking-wider mb-0.5">Moringa</p>
+          <p class="font-serif text-base font-semibold text-gray-800 leading-snug">Nourishing Body Butter</p>
+          <p class="text-brand font-medium text-sm mt-1.5">₹1,495</p>
+        </div>
+      </a>
+      <a href="product.html?id=TBS_014" class="bg-white rounded-2xl overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow duration-300 block">
+        <div class="aspect-square overflow-hidden bg-brand-pale">
+          <img src="./products/TBS_014.jpg" alt="Edelweiss Daily Serum Concentrate" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.parentElement.classList.add('img-placeholder'); this.style.display='none';" />
+        </div>
+        <div class="p-4">
+          <p class="text-[10px] text-brand/50 uppercase tracking-wider mb-0.5">Edelweiss</p>
+          <p class="font-serif text-base font-semibold text-gray-800 leading-snug">Daily Serum Concentrate</p>
+          <p class="text-brand font-medium text-sm mt-1.5">₹3,995</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════ -->
+<footer class="bg-brand text-white">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+      <div class="lg:col-span-1">
+        <div class="mb-5">
+          <p class="font-serif text-2xl font-semibold">The Body Shop</p>
+          <p class="text-white/50 text-[10px] tracking-[0.25em] uppercase mt-0.5">Est. 1976</p>
+        </div>
+        <p class="text-white/65 text-sm font-sans leading-relaxed mb-6">
+          We believe in business as a force for good. Cruelty-free, ethically sourced, and made with love for people and planet.
+        </p>
+        <div class="flex gap-4">
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="Instagram"><i class="fa-brands fa-instagram text-sm"></i></a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="Facebook"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="Twitter"><i class="fa-brands fa-x-twitter text-sm"></i></a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="YouTube"><i class="fa-brands fa-youtube text-sm"></i></a>
+        </div>
+      </div>
+      <div>
+        <p class="text-xs tracking-[0.25em] uppercase font-medium text-white/50 mb-5">Shop</p>
+        <ul class="space-y-3">
+          <li><a href="shop.html" class="footer-link text-sm text-white/75 font-sans">New Arrivals</a></li>
+          <li><a href="shop.html" class="footer-link text-sm text-white/75 font-sans">Bestsellers</a></li>
+          <li><a href="shop.html?category=Skincare" class="footer-link text-sm text-white/75 font-sans">Skincare</a></li>
+          <li><a href="shop.html?category=Body%20Care" class="footer-link text-sm text-white/75 font-sans">Body Care</a></li>
+          <li><a href="shop.html?category=Hair%20Care" class="footer-link text-sm text-white/75 font-sans">Haircare</a></li>
+          <li><a href="shop.html?category=Fragrance" class="footer-link text-sm text-white/75 font-sans">Fragrance</a></li>
+          <li><a href="shop.html?category=Gifts%20%26%20Sets" class="footer-link text-sm text-white/75 font-sans">Gift Sets</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs tracking-[0.25em] uppercase font-medium text-white/50 mb-5">Help &amp; Info</p>
+        <ul class="space-y-3">
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">About Us</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Our Story</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Sustainability</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Careers</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Store Locator</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs tracking-[0.25em] uppercase font-medium text-white/50 mb-5">Policies</p>
+        <ul class="space-y-3">
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Shipping &amp; Delivery</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Returns &amp; Exchanges</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Terms &amp; Conditions</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Cookie Policy</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Accessibility</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/15 pt-8 flex flex-col md:flex-row justify-between items-center gap-5">
+      <p class="text-white/45 text-xs font-sans text-center md:text-left">
+        © 2026 The Body Shop International Limited. All rights reserved.
+      </p>
+      <div class="flex items-center gap-3">
+        <span class="text-white/40 text-[10px] tracking-wider uppercase font-sans mr-1">Secure Payments</span>
+        <i class="fa-brands fa-cc-visa text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+        <i class="fa-brands fa-cc-mastercard text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+        <i class="fa-brands fa-cc-amex text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+        <i class="fa-brands fa-cc-paypal text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════
+     AUTH MODAL
+═══════════════════════════════════════════════════ -->
+<div id="authModal" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="modalOverlay"></div>
+  <div class="modal-box relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 z-10">
+    <button id="closeAuthModal" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors" aria-label="Close">
+      <i class="fa fa-times text-gray-600 text-sm"></i>
+    </button>
+    <div class="text-center mb-8">
+      <p class="font-serif text-3xl font-semibold text-brand mb-1">Welcome</p>
+      <p class="text-gray-500 text-sm font-sans">Login or create a new account</p>
+      <div class="w-10 h-px bg-brand mx-auto mt-4"></div>
+    </div>
+    <div class="flex bg-warm-gray rounded-full p-1 mb-7">
+      <button id="tabLogin" onclick="switchTab('login')" class="flex-1 text-xs font-medium py-2.5 rounded-full bg-brand text-white transition-all">Sign In</button>
+      <button id="tabRegister" onclick="switchTab('register')" class="flex-1 text-xs font-medium py-2.5 rounded-full text-gray-600 transition-all">Create Account</button>
+    </div>
+    <div id="loginForm">
+      <form id="loginFormElement" onsubmit="handleLogin(event)">
+        <div class="space-y-4">
+          <button type="button" class="google-btn" onclick="handleGoogleSignIn()">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" opacity="0"/>
+            </svg>
+            Sign in with Google
+          </button>
+          <div class="or-divider">OR</div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Email</label>
+            <input id="loginEmail" type="email" placeholder="your@email.com" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Password</label>
+            <input id="loginPassword" type="password" placeholder="••••••••" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div class="flex justify-end">
+            <a href="#" class="text-xs text-brand hover:underline font-sans">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn-primary w-full bg-brand text-white text-sm font-medium tracking-wider py-3.5 rounded-full mt-2">Sign In</button>
+        </div>
+      </form>
+    </div>
+    <div id="registerForm" class="hidden">
+      <form id="registerFormElement" onsubmit="handleRegister(event)">
+        <div class="space-y-4">
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Full Name</label>
+            <input id="regName" type="text" placeholder="Jane Smith" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Phone Number</label>
+            <input id="regPhone" type="tel" placeholder="+91 98765 43210" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Email</label>
+            <input id="regEmail" type="email" placeholder="your@email.com" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Delivery Address</label>
+            <textarea id="regAddress" rows="2" placeholder="Street, City, Pincode" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all resize-none"></textarea>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Password</label>
+            <input id="regPassword" type="password" placeholder="Min 8 characters" minlength="8" required class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <button type="submit" class="btn-primary w-full bg-brand text-white text-sm font-medium tracking-wider py-3.5 rounded-full mt-2">Create Account</button>
+          <p class="text-xs text-gray-400 font-sans text-center leading-relaxed">
+            By creating an account, you agree to our <a href="#" class="text-brand hover:underline">Terms</a> and <a href="#" class="text-brand hover:underline">Privacy Policy</a>.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     GLOWBOT AI — FAB + FULL-HEIGHT DRAWER
+═══════════════════════════════════════════════════ -->
+<button id="chatFab" aria-label="Open GlowBot AI"
+  class="fab-btn fixed bottom-6 right-6 z-[60] w-[62px] h-[62px] bg-brand text-white rounded-full flex items-center justify-center shadow-lg">
+  <i id="fabIcon" class="fa fa-comments text-2xl"></i>
+  <span class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></span>
+</button>
+
+<div id="drawerOverlay" class="fixed inset-0 z-[55] bg-black/30 backdrop-blur-[2px]"></div>
+
+<aside id="copilotDrawer" class="drawer-closed fixed top-0 right-0 z-[60] h-full bg-white shadow-2xl flex flex-col" aria-label="GlowBot AI">
+  <div class="bg-brand px-5 py-4 flex items-center gap-3 flex-shrink-0">
+    <div class="relative flex-shrink-0">
+      <div class="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74z"/>
+          <path d="M5 3l.5 1.5L7 5l-1.5.5L5 7l-.5-1.5L3 5l1.5-.5z" fill="white" stroke="none"/>
+          <path d="M19 14l.4 1.2 1.2.4-1.2.4-.4 1.2-.4-1.2-1.2-.4 1.2-.4z" fill="white" stroke="none"/>
+        </svg>
+      </div>
+      <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-brand"></span>
+    </div>
+    <div class="flex-1 min-w-0">
+      <p class="text-white text-sm font-semibold font-serif leading-tight">GlowBot AI ✨</p>
+      <p class="text-white/70 text-[11px] font-sans mt-0.5">Your Personal Beauty Expert</p>
+    </div>
+    <button id="closeChatBtn" aria-label="Close GlowBot AI"
+      class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors flex-shrink-0">
+      <i class="fa fa-times text-white text-sm"></i>
+    </button>
+  </div>
+  <div class="bg-gradient-to-r from-brand/5 to-emerald-50 border-b border-brand/10 px-5 py-2 flex items-center gap-2">
+    <span class="inline-flex items-center gap-1.5 text-[10px] text-brand/60 font-sans tracking-wider">
+      <i class="fa fa-shield-heart text-[9px] text-brand/50"></i>
+      Personalised · Cruelty-Free Picks · Always Honest
+    </span>
+  </div>
+  <div id="chatMessages" class="chat-messages flex-1 overflow-y-auto px-4 py-5 space-y-4 bg-warm-gray/40">
+    <div class="msg-bot flex items-end gap-2">
+      <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0">
+        <i class="fa fa-leaf text-brand text-xs"></i>
+      </div>
+      <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm max-w-[85%]">
+        <p class="text-gray-700 text-sm font-sans leading-relaxed">Hi! ✨ I'm <strong>GlowBot</strong>, your personal beauty expert. Tell me about your skin type or concern, and I'll recommend the perfect products for you.</p>
+        <p class="text-gray-400 text-[10px] font-sans mt-1.5">Just now</p>
+      </div>
+    </div>
+    <div id="quickReplies" class="flex flex-wrap gap-2 pl-9">
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Dry Skin</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Oily Skin</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Anti-Ageing</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Acne-Prone</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Sensitive Skin</button>
+    </div>
+  </div>
+  <div class="flex-shrink-0 px-4 py-4 bg-white border-t border-gray-100">
+    <div class="flex items-center gap-2">
+      <button id="gpsBtn" title="Share my location"
+        class="w-9 h-9 flex items-center justify-center rounded-full border border-brand/30 text-brand hover:bg-brand/10 transition-colors flex-shrink-0">
+        <i class="fa fa-map-marker-alt text-sm"></i>
+      </button>
+      <input id="chatInput" type="text" placeholder="Ask GlowBot about your skin…"
+        class="flex-1 bg-warm-gray rounded-full px-4 py-2.5 text-sm font-sans text-gray-700 placeholder:text-gray-400 border border-transparent focus:outline-none focus:border-brand/30 focus:bg-white transition-all" />
+      <button id="chatSendBtn" onclick="sendChatMessage()"
+        class="btn-primary w-10 h-10 bg-brand text-white rounded-full flex items-center justify-center flex-shrink-0">
+        <i class="fa fa-paper-plane text-sm"></i>
+      </button>
+    </div>
+    <p class="text-center text-[10px] text-gray-400 font-sans mt-2">AI responses are for guidance only. Always patch-test new products.</p>
+  </div>
+</aside>
+
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════ -->
+<script>
+
+  // ═══════════════════════════════════════════════════
+  // ── SOURCE OF TRUTH: read cart from localStorage ──
+  // ═══════════════════════════════════════════════════
+  let cartData = JSON.parse(localStorage.getItem('myCartArray')) || [];
+
+  // Discount state
+  let promoDiscount = 0;
+
+
+  // ═══════════════════════════════════════════════════
+  // renderCart()
+  // ═══════════════════════════════════════════════════
+  function renderCart() {
+    const container = document.getElementById('cartItemsContainer');
+
+    // ── Empty state ──────────────────────────────────
+    if (cartData.length === 0) {
+      const isLoggedOut = !localStorage.getItem('userPhone');
+      container.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-20 text-center">
+          <div class="empty-bag-icon w-24 h-24 bg-brand-pale rounded-full flex items-center justify-center mb-6">
+            <i class="fa fa-shopping-bag text-brand/30 text-5xl"></i>
+          </div>
+          <h2 class="font-serif text-3xl font-light text-brand mb-2">
+            ${isLoggedOut ? 'Sign in to view your bag' : 'Your bag is empty'}
+          </h2>
+          <p class="text-gray-400 text-sm font-sans mb-8 max-w-xs leading-relaxed">
+            ${isLoggedOut
+              ? 'Please sign in to access your saved items and continue shopping.'
+              : 'Looks like you haven\'t added anything yet. Explore our natural, cruelty-free range and find your perfect match.'}
+          </p>
+          ${isLoggedOut
+            ? `<button onclick="openModal()"
+                class="btn-primary bg-brand text-white text-sm font-medium tracking-widest uppercase px-10 py-4 rounded-full inline-flex items-center gap-3 shadow-md">
+                <i class="fa fa-user text-xs"></i>
+                Sign In
+              </button>`
+            : `<a href="shop.html"
+                class="btn-primary bg-brand text-white text-sm font-medium tracking-widest uppercase px-10 py-4 rounded-full inline-flex items-center gap-3 shadow-md">
+                <i class="fa fa-arrow-left text-xs"></i>
+                Continue Shopping
+              </a>`}
+          <a href="index.html" class="mt-4 text-xs text-brand/50 hover:text-brand font-sans transition-colors underline underline-offset-2">
+            Go back to homepage
+          </a>
+        </div>`;
+
+      updateSummary(0);
+      // Disable and dim checkout button when cart is empty
+      const btn = document.getElementById('checkoutBtn');
+      btn.classList.add('opacity-50', 'pointer-events-none');
+      btn.setAttribute('aria-disabled', 'true');
+      return;
+    }
+
+    // ── Enable checkout button when cart has items ───
+    const btn = document.getElementById('checkoutBtn');
+    btn.classList.remove('opacity-50', 'pointer-events-none');
+    btn.removeAttribute('aria-disabled');
+
+    // ── Render item cards ────────────────────────────
+    container.innerHTML = cartData.map((item) => {
+      const price    = typeof item.price === 'number' ? item.price : parseInt(item.price) || 0;
+      const qty      = typeof item.qty   === 'number' ? item.qty   : parseInt(item.qty)   || 1;
+      const imgSrc   = './products/' + (item.product_id || item.id) + '.jpg';
+      const badge    = item.badge    || '';
+      const badgeColor = item.badgeColor || 'bg-brand';
+      const subtitle = item.subtitle || item.category || '';
+      const category = item.category || '';
+
+      return `
+      <div class="cart-item bg-white rounded-2xl p-5 flex flex-col sm:flex-row gap-5 border border-gray-100/80"
+           id="cart-item-${escHtml(item.id)}">
+
+        <!-- Product image -->
+        <div class="relative flex-shrink-0 w-full sm:w-28 h-36 sm:h-28 rounded-xl overflow-hidden bg-brand-pale">
+          <a href="product.html?id=${escHtml(item.id)}" class="block w-full h-full">
+            <img
+              src="${escHtml(imgSrc)}"
+              alt="${escHtml(item.name || '')}"
+              class="cart-product-img"
+              onerror="this.src='./products/TBS_001.jpg';"
+            />
+          </a>
+          ${badge ? `<span class="${escHtml(badgeColor)} absolute top-2 left-2 text-white text-[9px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full">${escHtml(badge)}</span>` : ''}
+        </div>
+
+        <!-- Product info -->
+        <div class="flex-1 min-w-0 flex flex-col justify-between gap-3">
+
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-[10px] text-brand/50 uppercase tracking-wider font-medium mb-0.5">${escHtml(category)} · ${escHtml(item.id)}</p>
+              <a href="product.html?id=${escHtml(item.id)}" class="hover:text-brand transition-colors">
+                <h3 class="font-serif text-xl font-semibold text-gray-900 leading-snug">${escHtml(item.name || 'Product')}</h3>
+              </a>
+              <p class="text-xs text-gray-400 font-sans mt-0.5">${escHtml(subtitle)}</p>
+            </div>
+            <button
+              onclick="removeItem('${escHtml(item.id)}')"
+              class="remove-btn flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-gray-300 hover:bg-red-50 transition-all"
+              aria-label="Remove ${escHtml(item.name || '')}">
+              <i class="fa fa-trash-can text-sm"></i>
+            </button>
+          </div>
+
+          <!-- Price + Qty row -->
+          <div class="flex items-center justify-between flex-wrap gap-3">
+            <div class="flex items-center gap-0 bg-warm-gray rounded-full p-1">
+              <button
+                onclick="changeQty('${escHtml(item.id)}', -1)"
+                class="qty-btn w-8 h-8 rounded-full border border-brand/20 bg-white text-brand font-semibold text-lg flex items-center justify-center leading-none"
+                aria-label="Decrease quantity">
+                <span class="relative -top-px">−</span>
+              </button>
+              <span
+                id="qty-${escHtml(item.id)}"
+                class="w-10 text-center text-sm font-semibold text-gray-800 font-sans select-none">
+                ${qty}
+              </span>
+              <button
+                onclick="changeQty('${escHtml(item.id)}', 1)"
+                class="qty-btn w-8 h-8 rounded-full border border-brand/20 bg-white text-brand font-semibold text-lg flex items-center justify-center leading-none"
+                aria-label="Increase quantity">
+                <span class="relative -top-px">+</span>
+              </button>
+            </div>
+            <div class="text-right">
+              <p class="text-xs text-gray-400 font-sans">₹${price.toLocaleString('en-IN')} × ${qty}</p>
+              <p id="price-${escHtml(item.id)}" class="font-serif text-xl font-semibold text-brand">
+                ₹${(price * qty).toLocaleString('en-IN')}
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <button class="text-[11px] text-brand/50 hover:text-brand font-sans transition-colors flex items-center gap-1.5">
+              <i class="fa fa-heart text-[10px]"></i> Move to Wishlist
+            </button>
+          </div>
+
+        </div>
+      </div>`;
+    }).join('');
+
+    // Recalculate totals
+    const subtotal = cartData.reduce((sum, item) => {
+      const p = typeof item.price === 'number' ? item.price : parseInt(item.price) || 0;
+      const q = typeof item.qty   === 'number' ? item.qty   : parseInt(item.qty)   || 1;
+      return sum + p * q;
+    }, 0);
+    updateSummary(subtotal);
+  }
+
+
+  // ═══════════════════════════════════════════════════
+  // persistCart()
+  // ═══════════════════════════════════════════════════
+  function persistCart() {
+    localStorage.setItem('myCartArray', JSON.stringify(cartData));
+  }
+
+
+  // ═══════════════════════════════════════════════════
+  // updateSummary(subtotal)
+  // ═══════════════════════════════════════════════════
+  function updateSummary(subtotal) {
+    const TAX_RATE      = 0.18;
+    const FREE_SHIPPING = 2000;
+    const SHIPPING_FEE  = 100;
+
+    const shipping = (subtotal > 0 && subtotal >= FREE_SHIPPING) ? 0 : (subtotal > 0 ? SHIPPING_FEE : 0);
+    const taxable  = subtotal - promoDiscount;
+    const tax      = Math.round(taxable * TAX_RATE);
+    const total    = taxable + shipping + tax;
+
+    const fmt = n => `₹${n.toLocaleString('en-IN')}`;
+
+    document.getElementById('summarySubtotal').textContent = fmt(subtotal);
+    document.getElementById('summaryTax').textContent      = fmt(tax);
+    document.getElementById('summaryTotal').textContent    = fmt(total);
+
+    const shippingEl = document.getElementById('summaryShipping');
+    const freeBadge  = document.getElementById('freeShippingBadge');
+    if (shipping === 0 && subtotal > 0) {
+      shippingEl.textContent = '₹0';
+      shippingEl.classList.add('text-emerald-600');
+      freeBadge.classList.remove('hidden');
+    } else {
+      shippingEl.textContent = subtotal > 0 ? fmt(SHIPPING_FEE) : '₹0';
+      shippingEl.classList.remove('text-emerald-600');
+      freeBadge.classList.add('hidden');
+    }
+
+    // Sync navbar cart badge and localStorage count
+    const totalQty = cartData.reduce((s, i) => {
+      const q = typeof i.qty === 'number' ? i.qty : parseInt(i.qty) || 1;
+      return s + q;
+    }, 0);
+    document.getElementById('cartCount').textContent = totalQty;
+    localStorage.setItem('cartCount', totalQty);
+  }
+
+
+  // ═══════════════════════════════════════════════════
+  // changeQty(id, delta)
+  // ═══════════════════════════════════════════════════
+  function changeQty(id, delta) {
+    const item = cartData.find(i => i.id === id);
+    if (!item) return;
+
+    const currentQty = typeof item.qty === 'number' ? item.qty : parseInt(item.qty) || 1;
+    item.qty = Math.max(1, currentQty + delta);
+
+    document.getElementById(`qty-${id}`).textContent = item.qty;
+
+    const price = typeof item.price === 'number' ? item.price : parseInt(item.price) || 0;
+    document.getElementById(`price-${id}`).textContent = `₹${(price * item.qty).toLocaleString('en-IN')}`;
+
+    const card = document.getElementById(`cart-item-${id}`);
+    if (card) {
+      const priceEl = card.querySelector(`[id="price-${id}"]`);
+      if (priceEl && priceEl.previousElementSibling) {
+        priceEl.previousElementSibling.textContent = `₹${price.toLocaleString('en-IN')} × ${item.qty}`;
+      }
+    }
+
+    persistCart();
+    const subtotal = cartData.reduce((s, i) => {
+      const p = typeof i.price === 'number' ? i.price : parseInt(i.price) || 0;
+      const q = typeof i.qty   === 'number' ? i.qty   : parseInt(i.qty)   || 1;
+      return s + p * q;
+    }, 0);
+    updateSummary(subtotal);
+  }
+
+
+  // ═══════════════════════════════════════════════════
+  // removeItem(id) — animated removal + persists
+  // ═══════════════════════════════════════════════════
+  function removeItem(id) {
+    const el = document.getElementById(`cart-item-${id}`);
+    if (el) {
+      el.style.transition = 'opacity 0.3s ease, transform 0.3s ease, max-height 0.4s ease';
+      el.style.opacity    = '0';
+      el.style.transform  = 'translateX(24px)';
+      el.style.maxHeight  = el.offsetHeight + 'px';
+      setTimeout(() => {
+        el.style.maxHeight    = '0';
+        el.style.marginBottom = '0';
+        el.style.padding      = '0';
+        el.style.overflow     = 'hidden';
+      }, 280);
+      setTimeout(() => {
+        cartData = cartData.filter(i => i.id !== id);
+        persistCart();
+        renderCart();
+      }, 550);
+    }
+  }
+
+
+  // ═══════════════════════════════════════════════════
+  // applyPromo()
+  // ═══════════════════════════════════════════════════
+  function applyPromo() {
+    const code  = document.getElementById('promoInput').value.trim().toUpperCase();
+    const msgEl = document.getElementById('promoMsg');
+    const CODES = { 'GLOW10': 0.10, 'NATURE15': 0.15, 'LEAF20': 0.20 };
+
+    msgEl.classList.remove('hidden', 'text-emerald-600', 'text-red-500');
+
+    if (!code) {
+      msgEl.textContent = 'Please enter a promo code.';
+      msgEl.classList.add('text-red-500'); msgEl.classList.remove('hidden'); return;
+    }
+
+    if (CODES[code]) {
+      const subtotal = cartData.reduce((sum, i) => {
+        const p = typeof i.price === 'number' ? i.price : parseInt(i.price) || 0;
+        const q = typeof i.qty   === 'number' ? i.qty   : parseInt(i.qty)   || 1;
+        return sum + p * q;
+      }, 0);
+      promoDiscount = Math.round(subtotal * CODES[code]);
+      msgEl.textContent = `🎉 Code applied! You save ₹${promoDiscount.toLocaleString('en-IN')} (${Math.round(CODES[code]*100)}% off)`;
+      msgEl.classList.add('text-emerald-600'); msgEl.classList.remove('hidden');
+      updateSummary(subtotal);
+    } else {
+      promoDiscount = 0;
+      msgEl.textContent = 'Invalid promo code. Try GLOW10, NATURE15, or LEAF20.';
+      msgEl.classList.add('text-red-500'); msgEl.classList.remove('hidden');
+    }
+  }
+
+
+  // ═══════════════════════════════════════════════════
+  // GLOBAL AUTH STATE
+  // FIX (Bug 2.1, 7): updateNavAccount() strictly matches index.html logic.
+  // ═══════════════════════════════════════════════════
+  function isLoggedIn() { return !!localStorage.getItem('userPhone'); }
+
+  function updateNavAccount() {
+    const label = document.getElementById('navAccountLabel');
+    if (!label) return;
+    const name = localStorage.getItem('userName') || '';
+    if (isLoggedIn() && name) {
+      label.textContent = 'Hi, ' + name.split(' ')[0];
+    } else {
+      label.textContent = 'Account';
+    }
+  }
+
+  function switchTab(tab) {
+    const loginForm    = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const tabLogin     = document.getElementById('tabLogin');
+    const tabRegister  = document.getElementById('tabRegister');
+    if (!loginForm || !registerForm) return;
+    if (tab === 'login') {
+      loginForm.classList.remove('hidden');    registerForm.classList.add('hidden');
+      tabLogin.classList.add('bg-brand', 'text-white'); tabLogin.classList.remove('text-gray-600');
+      tabRegister.classList.remove('bg-brand', 'text-white'); tabRegister.classList.add('text-gray-600');
+    } else {
+      loginForm.classList.add('hidden');       registerForm.classList.remove('hidden');
+      tabRegister.classList.add('bg-brand', 'text-white'); tabRegister.classList.remove('text-gray-600');
+      tabLogin.classList.remove('bg-brand', 'text-white'); tabLogin.classList.add('text-gray-600');
+    }
+  }
+
+  // FIX (Bug 2.1): registerUser fallback sets a real phone number and 'Demo User'
+  async function handleRegister(e) {
+    e.preventDefault();
+    const name    = document.getElementById('regName').value.trim();
+    const phone   = document.getElementById('regPhone').value.trim();
+    const email   = document.getElementById('regEmail').value.trim();
+    const address = document.getElementById('regAddress').value.trim();
+    if (!name || !phone || !email) { alert('Please fill in your name, phone number, and email.'); return; }
+    const password = document.getElementById('regPassword').value;
+    if (password.length < 8) { alert('Password must be at least 8 characters long.'); return; }
+    try {
+      const res  = await fetch('http://localhost:8000/api/register', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone_number: phone, email, address }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('userPhone', phone); localStorage.setItem('userName', name);
+        closeModal(); updateNavAccount(); window.location.reload();
+      } else { alert(data.detail || data.message || `Server error ${res.status}. Please try again.`); }
+    } catch (err) {
+      // FIX (Bug 2.1): Fallback sets a phone number (not email) and explicit userName
+      console.warn('[Auth] Register API unreachable, using fallback:', err);
+      localStorage.setItem('userPhone', phone || '+919811755515');
+      localStorage.setItem('userName', name || 'Demo User');
+      closeModal(); updateNavAccount(); window.location.reload();
+    }
+  }
+
+  // FIX (Bug 2.1): loginUser fallback sets a phone number (not email) and 'Demo User'
+  async function handleLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    if (!email) { alert('Please enter your email address.'); return; }
+    try {
+      const res  = await fetch('http://localhost:8000/api/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (res.status === 404) { alert('Account not found. Please register.'); switchTab('register'); return; }
+      if (!res.ok) { const data = await res.json().catch(() => ({})); alert(data.detail || `Server error ${res.status}. Please try again.`); return; }
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('userPhone', data.phone_number); localStorage.setItem('userName', data.name);
+        closeModal(); updateNavAccount(); window.location.reload();
+      } else { alert('Login failed. Please try again.'); }
+    } catch (err) {
+      // FIX (Bug 2.1): Fallback sets a phone number (not the email address) and explicit userName
+      console.warn('[Auth] Login API unreachable, using fallback:', err);
+      localStorage.setItem('userPhone', '+919811755515');
+      localStorage.setItem('userName', 'Demo User');
+      closeModal(); updateNavAccount(); window.location.reload();
+    }
+  }
+
+  // FIX (Bug 2.1): Google Sign-In sets the same mock session as index.html
+  function handleGoogleSignIn() {
+    localStorage.setItem('userPhone', '+919811755515');
+    localStorage.setItem('userName', 'Demo User');
+    closeModal(); window.location.reload();
+  }
+
+  function openModal() {
+    const authModal = document.getElementById('authModal');
+    authModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+      authModal.style.opacity = '1';
+      authModal.querySelector('.modal-box').style.transform = 'scale(1)';
+    });
+  }
+  function closeModal() {
+    const authModal = document.getElementById('authModal');
+    authModal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function escHtml(str) {
+    if (typeof str !== 'string') return String(str || '');
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+
+  // ═══════════════════════════════════════════════════
+  // GLOWBOT COPILOT DRAWER
+  // FIX (Bugs 1.3, 1.4): Full history & session system copied from index.html
+  // ═══════════════════════════════════════════════════
+
+  // ── Session ID: prefers userPhone, falls back to localStorage guestSession ──
+  // FIX (Bug 1.4): Uses localStorage.getItem('guestSession') fallback
+  const sessionId = (() => {
+    const phone = localStorage.getItem('userPhone');
+    if (phone) return phone;
+    let guest = localStorage.getItem('guestSession') || sessionStorage.getItem('guestSession');
+    if (!guest) {
+      guest = 'sess_' + Math.random().toString(36).slice(2, 11);
+      sessionStorage.setItem('guestSession', guest);
+      localStorage.setItem('guestSession', guest);
+    }
+    return guest;
+  })();
+
+  // ── Chat history persistence (Bug 1.3) ──────────────────────────────────────
+  // History stored per-session under key glowbotHistory_<sessionId>
+  // Schema: Array of { role: 'bot'|'user', text: string, time: string }
+  const HISTORY_KEY = `glowbotHistory_${sessionId}`;
+
+  function loadRawHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function saveRawHistory(history) {
+    try {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    } catch (_) {
+      // Storage quota exceeded — fail silently; live messages still render
+    }
+  }
+
+  /**
+   * loadChatHistory()
+   * Reads every saved { role, text, time } entry and renders them into
+   * #chatMessages, injecting them AFTER the static welcome message and
+   * BEFORE the quick-reply chips (which get hidden once history exists).
+   *
+   * Called once when the drawer opens for the first time.
+   */
+  function loadChatHistory() {
+    const history = loadRawHistory();
+    if (!history.length) return;
+
+    // Hide quick-reply chips — history implies user has already interacted
+    const quickReplies = document.getElementById('quickReplies');
+    if (quickReplies) quickReplies.style.display = 'none';
+
+    const container = document.getElementById('chatMessages');
+    if (!container) return;
+
+    // Visual divider before restored messages
+    const divider = document.createElement('div');
+    divider.className = 'flex items-center gap-2 my-2';
+    divider.innerHTML = `
+      <div class="flex-1 h-px bg-brand/10"></div>
+      <span class="text-[9px] text-brand/40 font-sans tracking-wider uppercase whitespace-nowrap">Previous conversation</span>
+      <div class="flex-1 h-px bg-brand/10"></div>`;
+    container.appendChild(divider);
+
+    // Replay each saved message without re-saving (skipPersist = true)
+    history.forEach(entry => {
+      _renderMessage(entry.text, entry.role, entry.time, true);
+    });
+
+    container.scrollTop = container.scrollHeight;
+  }
+
+  /**
+   * _renderMessage(text, role, time, skipPersist)
+   * Low-level render function. Creates the DOM bubble and appends it.
+   * skipPersist=true is used when replaying history so we don't double-save.
+   */
+  function _renderMessage(text, role, time, skipPersist) {
+    const container = document.getElementById('chatMessages');
+    if (!container) return;
+
+    const isBot  = role === 'bot';
+    const now    = time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const wrapper = document.createElement('div');
+    wrapper.className = isBot ? 'msg-bot flex items-end gap-2' : 'msg-user flex justify-end';
+
+    if (isBot) {
+      wrapper.innerHTML = `
+        <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0">
+          <i class="fa fa-leaf text-brand text-xs"></i>
+        </div>
+        <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm max-w-[85%]">
+          <p class="text-gray-700 text-sm font-sans leading-relaxed">${text}</p>
+          <p class="text-gray-400 text-[10px] font-sans mt-1.5">${now}</p>
+        </div>`;
+    } else {
+      wrapper.innerHTML = `
+        <div class="bg-brand rounded-2xl rounded-br-sm px-4 py-3 shadow-sm max-w-[85%]">
+          <p class="text-white text-sm font-sans leading-relaxed">${escHtml(text)}</p>
+          <p class="text-white/50 text-[10px] font-sans mt-1.5 text-right">${now}</p>
+        </div>`;
+    }
+
+    container.appendChild(wrapper);
+    container.scrollTop = container.scrollHeight;
+
+    // Persist to localStorage (skip only when replaying history)
+    if (!skipPersist) {
+      const history = loadRawHistory();
+      history.push({ role, text, time: now });
+      saveRawHistory(history);
+    }
+  }
+
+  /**
+   * appendMessage(text, role)
+   * Public API — delegates to _renderMessage so history is always saved.
+   */
+  function appendMessage(text, role) {
+    _renderMessage(text, role, null, false);
+  }
+
+  // ── Drawer open/close with history guard (Bug 1.3) ──────────────────────────
+  let chatOpen      = false;
+  let _historyLoaded = false; // guard — only hydrate once per page load
+
+  function openDrawer() {
+    const drawer  = document.getElementById('copilotDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+    const icon    = document.getElementById('fabIcon');
+    if (drawer)  { drawer.classList.remove('drawer-closed'); drawer.classList.add('drawer-open'); }
+    if (overlay) overlay.classList.add('overlay-visible');
+    if (icon)    icon.className = 'fa fa-times text-xl';
+    document.body.style.overflow = 'hidden';
+    chatOpen = true;
+
+    // FIX (Bug 1.3): Load history the first time the drawer is opened
+    if (!_historyLoaded) {
+      _historyLoaded = true;
+      loadChatHistory();
+    }
+  }
+
+  function closeDrawer() {
+    const drawer  = document.getElementById('copilotDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+    const icon    = document.getElementById('fabIcon');
+    if (drawer)  { drawer.classList.add('drawer-closed'); drawer.classList.remove('drawer-open'); }
+    if (overlay) overlay.classList.remove('overlay-visible');
+    if (icon)    icon.className = 'fa fa-comments text-2xl';
+    document.body.style.overflow = '';
+    chatOpen = false;
+  }
+
+  function toggleChat() {
+    chatOpen ? closeDrawer() : openDrawer();
+  }
+
+  async function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const text  = input ? input.value.trim() : '';
+    if (!text) return;
+
+    input.value = '';
+
+    // Hide quick-reply chips after first user message
+    const quickReplies = document.getElementById('quickReplies');
+    if (quickReplies) quickReplies.style.display = 'none';
+
+    appendMessage(text, 'user');
+    showTyping();
+
+    try {
+      const res = await fetch('http://localhost:8000/chat', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, message: text }),
+      });
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
+      const data = await res.json();
+      removeTyping();
+      const reply = data.reply || data.message || data.response
+        || 'I am having trouble connecting right now. Please try again in a moment! ✨';
+      appendMessage(reply, 'bot');
+    } catch (err) {
+      removeTyping();
+      // Mock AI fallback — works even when server is down
+      const textLower = text.toLowerCase();
+      let mockReply = "I'm having trouble reaching my server, but I highly recommend our bestselling Tea Tree range! ✨";
+      if (textLower.includes('dry') || textLower.includes('moisture')) {
+        mockReply = "For dry skin, our Vitamin E Moisture Cream or Shea Butter are intensely hydrating! 💧";
+      } else if (textLower.includes('oily') || textLower.includes('acne') || textLower.includes('pimple')) {
+        mockReply = "For oily or acne-prone skin, the Tea Tree line is an absolute lifesaver. The Tea Tree Facial Wash is a fan favorite! 🌿";
+      } else if (textLower.includes('hair') || textLower.includes('dandruff')) {
+        mockReply = "Our Ginger Scalp Care Shampoo is the #1 solution for flaky scalps. It's super soothing! 💆‍♀️";
+      } else if (textLower.includes('gift')) {
+        mockReply = "Our beautifully wrapped Gift Sets make perfect presents! Check out the British Rose collection. 🎁";
+      }
+      appendMessage(mockReply, 'bot');
+      console.error('[GlowBot] Fetch error:', err);
+    }
+  }
+
+  function sendQuickReply(btn) {
+    const input = document.getElementById('chatInput');
+    if (input) input.value = btn.textContent.trim();
+    sendChatMessage();
+  }
+
+  function showTyping() {
+    const msgs = document.getElementById('chatMessages');
+    const el   = document.createElement('div');
+    el.id = 'typingIndicator'; el.className = 'msg-bot flex items-end gap-2';
+    el.innerHTML = `<div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0"><i class="fa fa-leaf text-brand text-xs"></i></div><div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm flex gap-1.5 items-center"><span class="typing-dot w-2 h-2 bg-brand/40 rounded-full block"></span><span class="typing-dot w-2 h-2 bg-brand/40 rounded-full block"></span><span class="typing-dot w-2 h-2 bg-brand/40 rounded-full block"></span></div>`;
+    msgs.appendChild(el); msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function removeTyping() { const el = document.getElementById('typingIndicator'); if (el) el.remove(); }
+
+  function initGpsBtn() {
+    document.getElementById('gpsBtn').addEventListener('click', () => {
+      if (!navigator.geolocation) { alert('Geolocation is not supported by your browser.'); return; }
+      const btn = document.getElementById('gpsBtn');
+      btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin text-sm"></i>';
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude.toFixed(6); const lon = pos.coords.longitude.toFixed(6);
+          const input = document.getElementById('chatInput');
+          input.value = `Find stores near Latitude: ${lat}, Longitude: ${lon}`;
+          btn.disabled = false; btn.innerHTML = '<i class="fa fa-map-marker-alt text-sm"></i>';
+          sendChatMessage();
+        },
+        (err) => {
+          btn.disabled = false; btn.innerHTML = '<i class="fa fa-map-marker-alt text-sm"></i>';
+          const msgs = { 1: 'Location access denied.', 2: 'Location unavailable.', 3: 'Location request timed out.' };
+          alert(msgs[err.code] || 'Could not retrieve your location.');
+        },
+        { timeout: 10000, maximumAge: 60000 }
+      );
+    });
+  }
+
+
+  // ═══════════════════════════════════════════════════
+  // DOMContentLoaded — wire everything up
+  // ═══════════════════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', () => {
+
+    // ── Render cart from localStorage ────────────────
+    renderCart();
+
+    // ── Navbar cart count from localStorage ──────────
+    const storedCount = parseInt(localStorage.getItem('cartCount') || '0', 10);
+    const liveCount   = cartData.reduce((s, i) => {
+      const q = typeof i.qty === 'number' ? i.qty : parseInt(i.qty) || 1;
+      return s + q;
+    }, 0);
+    document.getElementById('cartCount').textContent = liveCount || storedCount;
+
+    // ── Nav account label ─────────────────────────────
+    updateNavAccount();
+
+    // ── Auth modal wiring ─────────────────────────────
+    const openBtn      = document.getElementById('openAuthModal');
+    const closeBtn     = document.getElementById('closeAuthModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+
+    openBtn.addEventListener('click', () => {
+      if (localStorage.getItem('userPhone')) { window.location.href = 'account.html'; }
+      else { openModal(); }
+    });
+    closeBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── FIX (Bug 9): Checkout button — guards against unauthenticated access ──
+    // Replaces the old unguarded <a href="checkout.html"> with a proper listener.
+    document.getElementById('checkoutBtn').addEventListener('click', (e) => {
+      if (!localStorage.getItem('userPhone')) {
+        e.preventDefault();
+        openModal();
+      } else {
+        window.location.href = 'checkout.html';
+      }
+    });
+
+    // ── GlowBot drawer wiring ─────────────────────────
+    document.getElementById('chatFab').addEventListener('click', toggleChat);
+    document.getElementById('closeChatBtn').addEventListener('click', () => { if (chatOpen) closeDrawer(); });
+    document.getElementById('drawerOverlay').addEventListener('click', () => { if (chatOpen) closeDrawer(); });
+    document.getElementById('chatInput').addEventListener('keydown', e => { if (e.key === 'Enter') sendChatMessage(); });
+
+    // ── GPS button ────────────────────────────────────
+    initGpsBtn();
+
+    // ── Sticky navbar shadow ──────────────────────────
+    window.addEventListener('scroll', () => {
+      const nb = document.getElementById('navbar');
+      nb.style.boxShadow = window.scrollY > 40 ? '0 4px 24px rgba(0,66,54,0.10)' : '';
+    });
+
+    // ── Global Search ─────────────────────────────────
+    document.getElementById('globalSearch').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const val = this.value.trim();
+        if (val) window.location.href = 'shop.html?search=' + encodeURIComponent(val);
+      }
+    });
+
+  }); // end DOMContentLoaded
+
+</script>
+
+</body>
+</html>

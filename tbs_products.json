@@ -1,0 +1,1389 @@
+[
+  {
+    "product_id": "TBS_001",
+    "name": "Vitamin E Moisture Cream 50ml",
+    "category": "Skincare",
+    "price": 1095.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/a/6/a61e34dE000334_1.jpg",
+    "inventory": {
+      "warehouse_main": 115
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "48-hour hydration",
+        "Locks in moisture",
+        "Leaves skin silky smooth",
+        "Protects from environmental aggressors"
+      ],
+      "key_ingredients": [
+        "Vitamin E (Tocopherol)",
+        "Hyaluronic Acid",
+        "Raspberry Seed Extract",
+        "Community Fair Trade Aloe Vera"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_002",
+    "name": "Vitamin E Gentle Facial Wash 125ml",
+    "category": "Skincare",
+    "price": 895.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963819_1.jpg",
+    "inventory": {
+      "warehouse_main": 68
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types",
+        "Dry Skin"
+      ],
+      "benefits": [
+        "Cleanses gently",
+        "Hydrates while cleansing",
+        "Soap-free formula",
+        "Leaves skin soft"
+      ],
+      "key_ingredients": [
+        "Vitamin E",
+        "Aloe Vera",
+        "Wheat Germ Oil"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_003",
+    "name": "Vitamin E Night Cream 50ml",
+    "category": "Skincare",
+    "price": 1695.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963864_1.jpg",
+    "inventory": {
+      "warehouse_main": 85
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types",
+        "Dry Skin"
+      ],
+      "benefits": [
+        "Overnight nourishment",
+        "Restores skin overnight",
+        "Intensely moisturises",
+        "Wakes up to softer skin"
+      ],
+      "key_ingredients": [
+        "Vitamin E",
+        "Wheatgerm Oil",
+        "Hyaluronic Acid"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_004",
+    "name": "Vitamin E Gel Moisture Cream 50ml",
+    "category": "Skincare",
+    "price": 1395.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963833_1.jpg",
+    "inventory": {
+      "warehouse_main": 88
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Combination Skin",
+        "Oily Skin"
+      ],
+      "benefits": [
+        "48-hour hydration",
+        "Oil-free formula",
+        "Non-greasy finish",
+        "Fast absorbing"
+      ],
+      "key_ingredients": [
+        "Vitamin E",
+        "Raspberry Extract",
+        "Hyaluronic Acid"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_005",
+    "name": "Vitamin E Eye Cream 15ml",
+    "category": "Skincare",
+    "price": 1595.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963871_1.jpg",
+    "inventory": {
+      "warehouse_main": 136
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Reduces appearance of fine lines",
+        "Hydrates eye area",
+        "Lightweight texture"
+      ],
+      "key_ingredients": [
+        "Vitamin E",
+        "Wheatgerm Oil",
+        "Hyaluronic Acid"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_006",
+    "name": "Vitamin C Glow Boosting Moisturiser 50ml",
+    "category": "Skincare",
+    "price": 2695.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963802_1.jpg",
+    "inventory": {
+      "warehouse_main": 95
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dull Skin",
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Boosts radiance",
+        "Evens skin tone",
+        "Vitamin C protection",
+        "Brightening effect"
+      ],
+      "key_ingredients": [
+        "Vitamin C",
+        "Camu Camu",
+        "Community Fair Trade Moringa Oil"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_007",
+    "name": "Vitamin C Skin Boost Instant Smoother 30ml",
+    "category": "Skincare",
+    "price": 2295.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963789_1.jpg",
+    "inventory": {
+      "warehouse_main": 94
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dull Skin",
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Instant glow",
+        "Smooths skin texture",
+        "Brightens complexion"
+      ],
+      "key_ingredients": [
+        "Vitamin C",
+        "Camu Camu",
+        "Moringa"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_008",
+    "name": "Tea Tree Skin Clearing Facial Wash 250ml",
+    "category": "Skincare",
+    "price": 895.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/a/6/a61e34dE000334_1.jpg",
+    "inventory": {
+      "warehouse_main": 85
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Oily Skin",
+        "Acne-Prone Skin",
+        "Combination Skin"
+      ],
+      "benefits": [
+        "Purifies pores",
+        "Controls excess oil",
+        "Fights blemishes",
+        "Refreshing cleanse"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Tea Tree Oil",
+        "Witch Hazel"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_009",
+    "name": "Tea Tree Anti-Imperfection Daily Solution 50ml",
+    "category": "Skincare",
+    "price": 2095.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963703_1.jpg",
+    "inventory": {
+      "warehouse_main": 30
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Oily Skin",
+        "Acne-Prone Skin"
+      ],
+      "benefits": [
+        "Targets blemishes",
+        "Reduces redness",
+        "Clears skin",
+        "Daily use formula"
+      ],
+      "key_ingredients": [
+        "Tea Tree Oil",
+        "Salicylic Acid",
+        "Niacinamide"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_010",
+    "name": "Tea Tree Pore Minimiser Serum 30ml",
+    "category": "Skincare",
+    "price": 1995.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963710_1.jpg",
+    "inventory": {
+      "warehouse_main": 139
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Oily Skin",
+        "Combination Skin"
+      ],
+      "benefits": [
+        "Minimises pores",
+        "Controls shine",
+        "Refines skin texture"
+      ],
+      "key_ingredients": [
+        "Tea Tree Oil",
+        "Salicylic Acid",
+        "Hyaluronic Acid"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_011",
+    "name": "Tea Tree Oil 10ml",
+    "category": "Skincare",
+    "price": 695.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963727_1.jpg",
+    "inventory": {
+      "warehouse_main": 58
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Oily Skin",
+        "Acne-Prone Skin"
+      ],
+      "benefits": [
+        "Spot treatment",
+        "Antibacterial",
+        "Purifying"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Tea Tree Oil from Kenya"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_012",
+    "name": "Drops of Youth Youth Concentrate 30ml",
+    "category": "Skincare",
+    "price": 3495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963666_1.jpg",
+    "inventory": {
+      "warehouse_main": 34
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types",
+        "Mature Skin"
+      ],
+      "benefits": [
+        "Reduces fine lines",
+        "Boosts collagen",
+        "Plumps skin",
+        "Smoother complexion"
+      ],
+      "key_ingredients": [
+        "Edelweiss Plant Stem Cells",
+        "Sea Holly",
+        "Crithmum"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_013",
+    "name": "Drops of Youth Eye Concentrate 15ml",
+    "category": "Skincare",
+    "price": 2695.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963673_1.jpg",
+    "inventory": {
+      "warehouse_main": 29
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types",
+        "Mature Skin"
+      ],
+      "benefits": [
+        "Reduces eye bags",
+        "Minimises dark circles",
+        "Lifts eye area"
+      ],
+      "key_ingredients": [
+        "Edelweiss Plant Stem Cells",
+        "Sea Holly"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_014",
+    "name": "Edelweiss Daily Serum Concentrate 30ml",
+    "category": "Skincare",
+    "price": 3995.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963741_1.jpg",
+    "inventory": {
+      "warehouse_main": 36
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Sensitive Skin",
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Strengthens skin barrier",
+        "Reduces redness",
+        "Anti-oxidant protection",
+        "Plumping effect"
+      ],
+      "key_ingredients": [
+        "Edelweiss Flower",
+        "Hyaluronic Acid",
+        "Bifida Ferment Lysate"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_015",
+    "name": "Edelweiss Daily Moisturiser SPF20 50ml",
+    "category": "Skincare",
+    "price": 2895.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963758_1.jpg",
+    "inventory": {
+      "warehouse_main": 132
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Sensitive Skin",
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Daily UV protection",
+        "Strengthens skin",
+        "Hydrating",
+        "Anti-pollution shield"
+      ],
+      "key_ingredients": [
+        "Edelweiss Flower",
+        "SPF20 UV Filters",
+        "Hyaluronic Acid"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_016",
+    "name": "Skin Defence Multi-Protection Essence SPF50+ 30ml",
+    "category": "Skincare",
+    "price": 2495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963795_1.jpg",
+    "inventory": {
+      "warehouse_main": 74
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "SPF50+ protection",
+        "Lightweight texture",
+        "Anti-pollution",
+        "Daily sunscreen"
+      ],
+      "key_ingredients": [
+        "SPF50+ UV Filters",
+        "PA+++",
+        "Community Fair Trade Moringa"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_017",
+    "name": "British Rose Body Butter 200ml",
+    "category": "Body Care",
+    "price": 1495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/5/4/54dd8d3E000865ab1.jpg",
+    "inventory": {
+      "warehouse_main": 39
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Skin",
+        "All Skin Types"
+      ],
+      "benefits": [
+        "96-hour moisture",
+        "Intensely nourishes",
+        "Rosy fragrance",
+        "Melts into skin"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Rose Hip Oil",
+        "Shea Butter",
+        "Rose Petal Extract"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_018",
+    "name": "British Rose Body Yogurt 200ml",
+    "category": "Body Care",
+    "price": 1295.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963840_1.jpg",
+    "inventory": {
+      "warehouse_main": 40
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Normal Skin",
+        "Combination Skin"
+      ],
+      "benefits": [
+        "48-hour hydration",
+        "Light texture",
+        "Fast absorbing",
+        "Floral rose scent"
+      ],
+      "key_ingredients": [
+        "Rose Hip",
+        "Rose Centifolia",
+        "Yogurt Proteins"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_019",
+    "name": "British Rose Shower Gel 250ml",
+    "category": "Body Care",
+    "price": 395.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/5/4/54dd8d3E000865ab1.jpg",
+    "inventory": {
+      "warehouse_main": 82
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Softens skin",
+        "Gentle cleanse",
+        "Floral fragrance",
+        "Soap-free"
+      ],
+      "key_ingredients": [
+        "British Rose Extract",
+        "Aloe Vera",
+        "Rose Hip"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_020",
+    "name": "British Rose Petal Soft Hand Cream 30ml",
+    "category": "Body Care",
+    "price": 395.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963857_1.jpg",
+    "inventory": {
+      "warehouse_main": 65
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types",
+        "Dry Hands"
+      ],
+      "benefits": [
+        "Softens hands",
+        "Fast absorbing",
+        "Non-greasy",
+        "Delicate rose scent"
+      ],
+      "key_ingredients": [
+        "Rose Hip Oil",
+        "Rose Petal Extract",
+        "Glycerin"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_021",
+    "name": "Shea Body Butter 200ml",
+    "category": "Body Care",
+    "price": 1195.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963912_1.jpg",
+    "inventory": {
+      "warehouse_main": 32
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Very Dry Skin",
+        "Dry Skin"
+      ],
+      "benefits": [
+        "96-hour moisture",
+        "Deeply nourishes",
+        "Repairs dry skin",
+        "Rich creamy texture"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Shea Butter from Ghana",
+        "Soybean Oil"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_022",
+    "name": "Shea Shower Cream 250ml",
+    "category": "Body Care",
+    "price": 495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963929_1.jpg",
+    "inventory": {
+      "warehouse_main": 48
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Skin",
+        "Sensitive Skin"
+      ],
+      "benefits": [
+        "Hydrates while cleansing",
+        "Non-drying formula",
+        "Creamy lather",
+        "Nourishing"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Shea Butter",
+        "Aloe Vera"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_023",
+    "name": "Shea Nourishing Body Lotion 250ml",
+    "category": "Body Care",
+    "price": 895.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963936_1.jpg",
+    "inventory": {
+      "warehouse_main": 148
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Skin",
+        "Normal Skin"
+      ],
+      "benefits": [
+        "Nourishes dry skin",
+        "Long-lasting moisture",
+        "Smooth skin texture"
+      ],
+      "key_ingredients": [
+        "Shea Butter",
+        "Glycerin",
+        "Vitamin E"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_024",
+    "name": "Strawberry Shower Gel 250ml",
+    "category": "Body Care",
+    "price": 495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963943_1.jpg",
+    "inventory": {
+      "warehouse_main": 63
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types",
+        "Normal Skin"
+      ],
+      "benefits": [
+        "Fruity strawberry scent",
+        "Gentle cleanse",
+        "Leaves skin fresh",
+        "Lathers well"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Strawberry from Poland",
+        "Aloe Vera"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_025",
+    "name": "Strawberry Body Butter 200ml",
+    "category": "Body Care",
+    "price": 1495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963950_1.jpg",
+    "inventory": {
+      "warehouse_main": 123
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Skin",
+        "Normal Skin"
+      ],
+      "benefits": [
+        "96-hour moisture",
+        "Fruity scent",
+        "Rich texture",
+        "Intensely nourishing"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Strawberry",
+        "Shea Butter"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_026",
+    "name": "Moringa Shower Gel 250ml",
+    "category": "Body Care",
+    "price": 495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963967_1.jpg",
+    "inventory": {
+      "warehouse_main": 33
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Cleanses gently",
+        "Soft floral scent",
+        "Leaves skin smooth",
+        "Soap-free"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Moringa Oil",
+        "Aloe Vera"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_027",
+    "name": "Moringa Body Butter 200ml",
+    "category": "Body Care",
+    "price": 1495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963974_1.jpg",
+    "inventory": {
+      "warehouse_main": 48
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Skin",
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Deep nourishment",
+        "96-hour moisture",
+        "Delicate scent",
+        "Silky finish"
+      ],
+      "key_ingredients": [
+        "Moringa Oil",
+        "Shea Butter",
+        "Soybean Oil"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_028",
+    "name": "Almond Milk & Honey Calming Hand Cream 30ml",
+    "category": "Body Care",
+    "price": 345.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963981_1.jpg",
+    "inventory": {
+      "warehouse_main": 105
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Sensitive Skin",
+        "Dry Hands"
+      ],
+      "benefits": [
+        "Calms irritation",
+        "Protects hands",
+        "Soothes dry skin",
+        "Gentle fragrance"
+      ],
+      "key_ingredients": [
+        "Almond Milk",
+        "Honey",
+        "Glycerin"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_029",
+    "name": "Avocado Body Butter 200ml",
+    "category": "Body Care",
+    "price": 1495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015963998_1.jpg",
+    "inventory": {
+      "warehouse_main": 55
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Very Dry Skin",
+        "Dry Skin"
+      ],
+      "benefits": [
+        "Intensely moisturises",
+        "Nourishes rough skin",
+        "Rich buttery texture",
+        "96-hour moisture"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Avocado",
+        "Shea Butter"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_030",
+    "name": "Olive Body Butter 200ml",
+    "category": "Body Care",
+    "price": 1495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964001_1.jpg",
+    "inventory": {
+      "warehouse_main": 38
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Very Dry Skin",
+        "Dry Skin"
+      ],
+      "benefits": [
+        "96-hour moisture",
+        "Rich nourishment",
+        "Intensely hydrating"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Olive Oil",
+        "Shea Butter"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_031",
+    "name": "Ocean Lily Body Lotion 250ml",
+    "category": "Body Care",
+    "price": 995.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/1/4/14d3f49THEAC00000517_1.jpg",
+    "inventory": {
+      "warehouse_main": 39
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types",
+        "Normal Skin"
+      ],
+      "benefits": [
+        "Lightweight hydration",
+        "Fresh aquatic scent",
+        "Absorbs quickly",
+        "Smooth skin"
+      ],
+      "key_ingredients": [
+        "Ocean Lily Extract",
+        "Glycerin",
+        "Aloe Vera"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_032",
+    "name": "Ocean Lily Shower Gel 250ml",
+    "category": "Body Care",
+    "price": 495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/1/4/14d3f49THEAC00000516_1.jpg",
+    "inventory": {
+      "warehouse_main": 102
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Refreshing cleanse",
+        "Aquatic floral scent",
+        "Gentle formula"
+      ],
+      "key_ingredients": [
+        "Ocean Lily Extract",
+        "Aloe Vera"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_033",
+    "name": "Satsuma Shower Gel 250ml",
+    "category": "Body Care",
+    "price": 495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964018_1.jpg",
+    "inventory": {
+      "warehouse_main": 79
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Refreshes and cleanses",
+        "Citrus scent",
+        "Energising shower",
+        "Soap-free"
+      ],
+      "key_ingredients": [
+        "Satsuma Extract",
+        "Aloe Vera",
+        "Citrus Oil"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_034",
+    "name": "The India Edit Lotus Shower Gel 250ml",
+    "category": "Body Care",
+    "price": 395.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964025_1.jpg",
+    "inventory": {
+      "warehouse_main": 57
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Fresh lotus scent",
+        "Gentle cleanse",
+        "India-inspired fragrance"
+      ],
+      "key_ingredients": [
+        "Lotus Extract",
+        "Aloe Vera"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_035",
+    "name": "India Edit Pomegranate Body Lotion 250ml",
+    "category": "Body Care",
+    "price": 695.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964032_1.jpg",
+    "inventory": {
+      "warehouse_main": 40
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types",
+        "Normal Skin"
+      ],
+      "benefits": [
+        "Moisturises skin",
+        "Pomegranate fragrance",
+        "Lightweight formula"
+      ],
+      "key_ingredients": [
+        "Pomegranate Extract",
+        "Glycerin",
+        "Aloe Vera"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_036",
+    "name": "Pink Grapefruit Body Butter 200ml",
+    "category": "Body Care",
+    "price": 1495.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964039_1.jpg",
+    "inventory": {
+      "warehouse_main": 82
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Normal Skin",
+        "Dry Skin"
+      ],
+      "benefits": [
+        "96-hour moisture",
+        "Zesty citrus scent",
+        "Energising",
+        "Rich texture"
+      ],
+      "key_ingredients": [
+        "Pink Grapefruit Extract",
+        "Shea Butter",
+        "Vitamin C"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_037",
+    "name": "Ginger Anti-Dandruff Shampoo 250ml",
+    "category": "Hair Care",
+    "price": 615.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964049_1.jpg",
+    "inventory": {
+      "warehouse_main": 20
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Scalp",
+        "Flaky Scalp"
+      ],
+      "benefits": [
+        "Fights dandruff",
+        "Soothes itchy scalp",
+        "Reduces flakes",
+        "Refreshing ginger scent"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Ginger",
+        "Zinc Pyrithione",
+        "Silk Proteins"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_038",
+    "name": "Ginger Scalp Care Conditioner 250ml",
+    "category": "Hair Care",
+    "price": 695.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964056_1.jpg",
+    "inventory": {
+      "warehouse_main": 70
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Scalp",
+        "All Hair Types"
+      ],
+      "benefits": [
+        "Conditions hair",
+        "Soothes scalp",
+        "Reduces dryness",
+        "Detangles hair"
+      ],
+      "key_ingredients": [
+        "Ginger Root Extract",
+        "Silk Proteins",
+        "Panthenol"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_039",
+    "name": "Banana Truly Nourishing Shampoo 250ml",
+    "category": "Hair Care",
+    "price": 595.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964063_1.jpg",
+    "inventory": {
+      "warehouse_main": 114
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Hair",
+        "Damaged Hair"
+      ],
+      "benefits": [
+        "Nourishes dry hair",
+        "Reduces breakage",
+        "Adds shine",
+        "Strengthens hair"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Banana",
+        "Silk Proteins",
+        "Panthenol"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_040",
+    "name": "Banana Truly Nourishing Conditioner 250ml",
+    "category": "Hair Care",
+    "price": 695.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964070_1.jpg",
+    "inventory": {
+      "warehouse_main": 140
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Hair",
+        "Damaged Hair"
+      ],
+      "benefits": [
+        "Deep conditioning",
+        "Reduces frizz",
+        "Adds softness",
+        "Detangles"
+      ],
+      "key_ingredients": [
+        "Banana Extract",
+        "Silk Proteins",
+        "Shea Butter"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_041",
+    "name": "Moringa Broken Dreams Repair Shampoo 250ml",
+    "category": "Hair Care",
+    "price": 595.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964087_1.jpg",
+    "inventory": {
+      "warehouse_main": 112
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Damaged Hair",
+        "Brittle Hair"
+      ],
+      "benefits": [
+        "Repairs damaged hair",
+        "Strengthens strands",
+        "Reduces breakage",
+        "Cleanses gently"
+      ],
+      "key_ingredients": [
+        "Moringa Oil",
+        "Silk Proteins",
+        "Keratin"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_042",
+    "name": "Shea Moisture Shine Shampoo 250ml",
+    "category": "Hair Care",
+    "price": 595.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964094_1.jpg",
+    "inventory": {
+      "warehouse_main": 143
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Dry Hair",
+        "Coarse Hair"
+      ],
+      "benefits": [
+        "Adds shine",
+        "Moisturises hair",
+        "Reduces frizz",
+        "Nourishing cleanse"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Shea Butter",
+        "Argan Oil",
+        "Silk Proteins"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_043",
+    "name": "Tea Tree Purifying & Balancing Shampoo 250ml",
+    "category": "Hair Care",
+    "price": 595.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964100_1.jpg",
+    "inventory": {
+      "warehouse_main": 99
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "Oily Scalp",
+        "Normal to Oily Hair"
+      ],
+      "benefits": [
+        "Purifies scalp",
+        "Controls oil",
+        "Refreshing cleanse",
+        "Balances scalp"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Tea Tree Oil",
+        "Menthol",
+        "Silk Proteins"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_044",
+    "name": "White Musk Eau de Toilette 30ml",
+    "category": "Fragrance",
+    "price": 1895.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964117_1.jpg",
+    "inventory": {
+      "warehouse_main": 115
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Soft musk scent",
+        "Long-lasting fragrance",
+        "Unisex appeal",
+        "Clean powdery notes"
+      ],
+      "key_ingredients": [
+        "White Musk",
+        "Alcohol Denat"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_045",
+    "name": "British Rose Eau de Toilette 30ml",
+    "category": "Fragrance",
+    "price": 1895.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964124_1.jpg",
+    "inventory": {
+      "warehouse_main": 104
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Floral rose fragrance",
+        "Feminine scent",
+        "Fresh and romantic",
+        "Long-lasting"
+      ],
+      "key_ingredients": [
+        "Rose Extract",
+        "Alcohol Denat"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_046",
+    "name": "Woody Sandalwood Eau de Toilette 30ml",
+    "category": "Fragrance",
+    "price": 1895.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964131_1.jpg",
+    "inventory": {
+      "warehouse_main": 118
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Warm woody notes",
+        "Long-lasting",
+        "Unisex fragrance",
+        "Earthy and rich"
+      ],
+      "key_ingredients": [
+        "Sandalwood",
+        "Cedarwood",
+        "Alcohol Denat"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_047",
+    "name": "Lip Balm Swipe It Strawberry 5g",
+    "category": "Makeup",
+    "price": 595.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964148_1.jpg",
+    "inventory": {
+      "warehouse_main": 97
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Lip Types",
+        "Dry Lips"
+      ],
+      "benefits": [
+        "Moisturises lips",
+        "Fruity strawberry scent",
+        "Smooth application",
+        "Softens lips"
+      ],
+      "key_ingredients": [
+        "Community Fair Trade Marula Oil",
+        "Shea Butter"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_048",
+    "name": "Colour Crush Lipstick British Rose 302",
+    "category": "Makeup",
+    "price": 995.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964155_1.jpg",
+    "inventory": {
+      "warehouse_main": 80
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Creamy texture",
+        "Long-lasting colour",
+        "Moisturising formula",
+        "Vibrant pigment"
+      ],
+      "key_ingredients": [
+        "Castor Oil",
+        "Shea Butter",
+        "Vitamin E"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_049",
+    "name": "Berry Loving Gift Set",
+    "category": "Gifts & Sets",
+    "price": 2895.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/c/8/c8f9e02THEAC00000531_1x.jpg",
+    "inventory": {
+      "warehouse_main": 104
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Gift ready packaging",
+        "Strawberry & Blueberry variants",
+        "Shower & body set"
+      ],
+      "key_ingredients": [
+        "Strawberry Extract",
+        "Blueberry Extract",
+        "Aloe Vera"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_050",
+    "name": "Trio Shower Gel Gift Set",
+    "category": "Gifts & Sets",
+    "price": 1610.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/c/8/c8f9e02THEAC00000427_1x.jpg",
+    "inventory": {
+      "warehouse_main": 95
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "3 shower gels in one set",
+        "Gift ready",
+        "Value bundle",
+        "Variety of scents"
+      ],
+      "key_ingredients": [
+        "Rose Extract",
+        "Strawberry Extract",
+        "Moringa Oil"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  },
+  {
+    "product_id": "TBS_051",
+    "name": "Lotus Shower Gel Body Lotion & Mist Gift Set",
+    "category": "Gifts & Sets",
+    "price": 885.0,
+    "image_url": "https://images-static.nykaa.com/media/catalog/product/tr:w-500,h-500,cm-pad_resize/8/0/800000015964162_1.jpg",
+    "inventory": {
+      "warehouse_main": 80
+    },
+    "ai_search_data": {
+      "skin_type": [
+        "All Skin Types"
+      ],
+      "benefits": [
+        "Complete shower routine",
+        "India-inspired lotus fragrance",
+        "3-piece set"
+      ],
+      "key_ingredients": [
+        "Lotus Extract",
+        "Aloe Vera",
+        "Glycerin"
+      ]
+    },
+    "scraped_at": "2026-03-16T18:25:55.301409+00:00"
+  }
+]

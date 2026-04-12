@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Orders | The Body Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#004236',
+            'brand-light': '#005a48',
+            'brand-pale': '#e8f0ee',
+            cream: '#faf8f5',
+            'warm-gray': '#f5f2ef',
+          },
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'serif'],
+            sans:  ['Jost', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Promo bar ticker */
+    .ticker-wrap { overflow: hidden; }
+    .ticker { display: flex; gap: 3rem; animation: ticker 28s linear infinite; white-space: nowrap; }
+    .ticker:hover { animation-play-state: paused; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: #faf8f5; }
+
+    .navbar-glass {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(250, 248, 245, 0.92);
+      border-bottom: 1px solid rgba(0,66,54,0.08);
+    }
+
+    /* Nav underline animation */
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:#004236; transition: width 0.25s ease; }
+    .nav-link:hover::after { width:100%; }
+
+    .footer-link { transition: color 0.2s, padding-left 0.2s; }
+    .footer-link:hover { color:#fff; padding-left: 4px; }
+
+    /* Search bar */
+    .search-bar:focus { outline: none; border-color: #004236; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up   { animation: fadeUp 0.45s ease both; }
+    .fade-up-2 { animation: fadeUp 0.45s 0.1s ease both; }
+    .fade-up-3 { animation: fadeUp 0.45s 0.2s ease both; }
+
+    /* ── GlowBot FAB ── */
+    .fab-btn { box-shadow: 0 8px 32px rgba(0,66,54,0.38); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .fab-btn:hover { transform: scale(1.08); box-shadow: 0 12px 40px rgba(0,66,54,0.45); }
+
+    /* ── Copilot Side Drawer ── */
+    #copilotDrawer {
+      width: 450px;
+      max-width: 100vw;
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @media (max-width: 480px) {
+      #copilotDrawer { width: 100vw; }
+    }
+    #copilotDrawer.drawer-closed { transform: translateX(100%); }
+    #copilotDrawer.drawer-open   { transform: translateX(0); }
+
+    /* ── Drawer overlay ── */
+    #drawerOverlay {
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      opacity: 0;
+    }
+    #drawerOverlay.overlay-visible {
+      pointer-events: auto;
+      opacity: 1;
+    }
+
+    /* ── Chat message animations ── */
+    .chat-messages { scroll-behavior: smooth; }
+    .msg-bot { animation: slideInLeft 0.3s ease; }
+    .msg-user { animation: slideInRight 0.3s ease; }
+    @keyframes slideInLeft  { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+    @keyframes slideInRight { from { opacity:0; transform:translateX(10px);  } to { opacity:1; transform:none; } }
+
+    /* ── Typing dots ── */
+    .typing-dot { animation: typingBounce 1.2s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce { 0%,60%,100% { transform:translateY(0); } 30% { transform:translateY(-5px); } }
+
+    /* ── Scrollbar for drawer messages ── */
+    #chatMessages::-webkit-scrollbar { width: 4px; }
+    #chatMessages::-webkit-scrollbar-track { background: transparent; }
+    #chatMessages::-webkit-scrollbar-thumb { background: rgba(0,66,54,0.18); border-radius: 4px; }
+
+    /* ── Btn primary (used in drawer) ── */
+    .btn-primary { transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+    .btn-primary:hover { background: #005a48; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,66,54,0.3); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ── Orders page specific ── */
+    .order-card {
+      background: #fff;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(0,66,54,0.08);
+      box-shadow: 0 2px 16px rgba(0,66,54,0.06);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .order-card:hover {
+      box-shadow: 0 6px 28px rgba(0,66,54,0.11);
+      transform: translateY(-1px);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+    }
+    .status-delivered  { background: #dcfce7; color: #166534; }
+    .status-processing { background: #fef9c3; color: #854d0e; }
+    .status-shipped    { background: #dbeafe; color: #1e40af; }
+    .status-cancelled  { background: #fee2e2; color: #991b1b; }
+
+    .order-skeleton {
+      background: linear-gradient(90deg, #e8f0ee 25%, #f5f2ef 50%, #e8f0ee 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 1.25rem;
+    }
+    @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+    .btn-shop {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #004236;
+      color: #fff;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.2rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .btn-shop:hover {
+      background: #005a48;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,66,54,0.28);
+    }
+    .btn-shop:active { transform: translateY(0); }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #004236;
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .btn-back:hover { gap: 0.65rem; }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+<!-- ═══════════════════════════════════════════════════
+     AUTH GUARD — runs before DOM renders
+═══════════════════════════════════════════════════ -->
+<script>
+  (function () {
+    if (!localStorage.getItem('userPhone')) {
+      window.location.href = 'index.html';
+    }
+  })();
+</script>
+
+
+<!-- ═══════════════════════════════════════════════════
+     PROMO BAR
+═══════════════════════════════════════════════════ -->
+<div class="bg-brand text-white text-xs py-2.5 overflow-hidden ticker-wrap">
+  <div class="ticker">
+    <span>✦ FREE SHIPPING ON ORDERS OVER ₹2000</span>
+    <span>✦ CRUELTY FREE &amp; 100% VEGETARIAN</span>
+    <span>✦ ETHICALLY SOURCED INGREDIENTS WORLDWIDE</span>
+    <span>✦ EARN LOVE YOUR BODY™ REWARDS ON EVERY PURCHASE</span>
+    <span>✦ NEW: HEMP COLLECTION — DEEPLY NOURISHING</span>
+    <span>✦ FREE SHIPPING ON ORDERS OVER ₹2000</span>
+    <span>✦ CRUELTY FREE &amp; 100% VEGETARIAN</span>
+    <span>✦ ETHICALLY SOURCED INGREDIENTS WORLDWIDE</span>
+    <span>✦ EARN LOVE YOUR BODY™ REWARDS ON EVERY PURCHASE</span>
+    <span>✦ NEW: HEMP COLLECTION — DEEPLY NOURISHING</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════ -->
+<header id="navbar" class="sticky top-0 z-50 navbar-glass">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center gap-6">
+
+    <a href="index.html" class="flex-shrink-0 flex items-center gap-2.5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" width="180" height="46" aria-label="The Body Shop">
+        <rect x="0" y="0" width="220" height="56" rx="4" fill="#004236"/>
+        <g transform="translate(14, 10)">
+          <ellipse cx="8" cy="18" rx="5" ry="9" fill="none" stroke="#fff" stroke-width="1.4" transform="rotate(-30 8 18)"/>
+          <ellipse cx="8" cy="18" rx="5" ry="9" fill="none" stroke="#fff" stroke-width="1.4" transform="rotate(30 8 18)"/>
+          <ellipse cx="8" cy="18" rx="5" ry="9" fill="none" stroke="#fff" stroke-width="1.4"/>
+          <circle cx="8" cy="18" r="2.2" fill="#fff"/>
+        </g>
+        <text x="44" y="22" font-family="'Cormorant Garamond', Georgia, serif" font-size="14" font-weight="600" fill="#ffffff" letter-spacing="1.5">THE BODY SHOP</text>
+        <text x="44" y="37" font-family="'Jost', Arial, sans-serif" font-size="7.5" font-weight="400" fill="rgba(255,255,255,0.6)" letter-spacing="2.5">EST. 1976 · AGAINST ANIMAL TESTING</text>
+      </svg>
+    </a>
+
+    <!-- Nav links (desktop) -->
+    <nav class="hidden lg:flex items-center gap-7 ml-6">
+      <a href="shop.html?category=Skincare"           class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Skincare</a>
+      <a href="shop.html?category=Body%20Care"        class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Body</a>
+      <a href="shop.html?category=Hair%20Care"        class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Hair</a>
+      <a href="shop.html?category=Fragrance"          class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Fragrance</a>
+      <a href="shop.html?category=Gifts%20%26%20Sets" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Gifts</a>
+      <a href="shop.html?sale=true"                   class="nav-link text-sm font-medium text-brand font-semibold transition-colors">Sale</a>
+    </nav>
+
+    <div class="flex-1"></div>
+
+    <!-- Search -->
+    <div class="hidden md:flex items-center bg-warm-gray rounded-full px-4 py-2 gap-2 w-64 border border-transparent hover:border-brand/20 transition-colors">
+      <i class="fa fa-search text-brand/50 text-sm"></i>
+      <input id="globalSearch" type="text" placeholder="Search products…"
+        class="search-bar bg-transparent text-sm flex-1 border-none font-sans placeholder:text-gray-400 focus:outline-none" />
+    </div>
+
+    <!-- Icons -->
+    <div class="flex items-center gap-4 ml-2">
+      <button id="openAuthModal" class="relative group flex flex-col items-center" aria-label="Account">
+        <i class="fa fa-user text-brand text-lg group-hover:scale-110 transition-transform"></i>
+        <span id="navAccountLabel" class="text-[9px] text-brand/60 font-sans mt-0.5 hidden lg:block">Account</span>
+      </button>
+      <a href="cart.html" class="relative group flex flex-col items-center" aria-label="Cart">
+        <span class="relative">
+          <i class="fa fa-shopping-bag text-brand text-lg group-hover:scale-110 transition-transform"></i>
+          <span id="cartCount" class="absolute -top-2 -right-2 bg-brand text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </span>
+        <span class="text-[9px] text-brand/60 font-sans mt-0.5 hidden lg:block">Bag</span>
+      </a>
+      <button class="lg:hidden text-brand ml-1" aria-label="Menu">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN CONTENT — ORDER HISTORY
+═══════════════════════════════════════════════════ -->
+<main class="flex-1 max-w-3xl mx-auto w-full px-6 py-14">
+
+  <!-- Breadcrumb -->
+  <p class="text-xs text-gray-400 font-sans tracking-wider uppercase mb-8 fade-up">
+    <a href="index.html" class="hover:text-brand transition-colors">Home</a>
+    <span class="mx-2 text-gray-300">/</span>
+    <a href="account.html" class="hover:text-brand transition-colors">My Account</a>
+    <span class="mx-2 text-gray-300">/</span>
+    Order History
+  </p>
+
+  <!-- Page header -->
+  <div class="flex items-center justify-between mb-10 fade-up">
+    <div>
+      <h1 class="font-serif text-4xl font-light text-gray-900 leading-tight">Order History</h1>
+      <p class="text-gray-500 text-sm font-sans mt-1.5">Track and review all your past purchases</p>
+    </div>
+    <a href="account.html" class="btn-back hidden sm:inline-flex">
+      <i class="fa fa-arrow-left text-xs"></i>
+      Back to Account
+    </a>
+  </div>
+
+  <!-- Loading skeleton (shown while fetching) -->
+  <div id="ordersSkeleton" class="space-y-4 fade-up-2">
+    <div class="order-skeleton h-28"></div>
+    <div class="order-skeleton h-28"></div>
+    <div class="order-skeleton h-28" style="opacity:0.6;"></div>
+  </div>
+
+  <!-- Orders container (populated by fetchOrders) -->
+  <div id="ordersContainer" class="hidden space-y-4 fade-up-2"></div>
+
+  <!-- Empty state (shown when no orders or fetch fails) -->
+  <div id="ordersEmpty" class="hidden fade-up-2">
+    <div class="text-center py-20 px-6">
+      <!-- Icon -->
+      <div class="relative inline-flex mb-8">
+        <div class="w-24 h-24 rounded-full bg-brand-pale flex items-center justify-center">
+          <i class="fa fa-bag-shopping text-brand text-4xl opacity-50"></i>
+        </div>
+        <div class="absolute -bottom-1 -right-1 w-9 h-9 rounded-full bg-warm-gray border-4 border-cream flex items-center justify-center">
+          <i class="fa fa-clock text-gray-400 text-sm"></i>
+        </div>
+      </div>
+
+      <h2 class="font-serif text-3xl font-light text-gray-800 mb-3">
+        No orders yet
+      </h2>
+      <p class="text-gray-500 text-sm font-sans leading-relaxed max-w-xs mx-auto mb-8">
+        You haven't placed any orders yet. Explore our range of cruelty-free, ethically sourced products and find your next favourite.
+      </p>
+
+      <a href="shop.html" class="btn-shop">
+        <i class="fa fa-arrow-right text-xs"></i>
+        Continue Shopping
+      </a>
+
+      <!-- Subtle suggestion row -->
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-3">
+        <a href="shop.html?category=Skincare" class="text-xs font-sans text-brand/70 hover:text-brand border border-brand/20 hover:border-brand/50 px-4 py-2 rounded-full transition-all">Skincare</a>
+        <a href="shop.html?category=Body%20Care" class="text-xs font-sans text-brand/70 hover:text-brand border border-brand/20 hover:border-brand/50 px-4 py-2 rounded-full transition-all">Body Care</a>
+        <a href="shop.html?category=Gifts%20%26%20Sets" class="text-xs font-sans text-brand/70 hover:text-brand border border-brand/20 hover:border-brand/50 px-4 py-2 rounded-full transition-all">Gift Sets</a>
+        <a href="shop.html?sale=true" class="text-xs font-sans text-brand/70 hover:text-brand border border-brand/20 hover:border-brand/50 px-4 py-2 rounded-full transition-all">Sale</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════ -->
+<footer class="bg-brand text-white">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+
+      <!-- Brand col -->
+      <div class="lg:col-span-1">
+        <div class="mb-5">
+          <p class="font-serif text-2xl font-semibold">The Body Shop</p>
+          <p class="text-white/50 text-[10px] tracking-[0.25em] uppercase mt-0.5">Est. 1976</p>
+        </div>
+        <p class="text-white/65 text-sm font-sans leading-relaxed mb-6">
+          We believe in business as a force for good. Cruelty-free, ethically sourced, and made with love for people and planet.
+        </p>
+        <div class="flex gap-4">
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="Instagram">
+            <i class="fa-brands fa-instagram text-sm"></i>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f text-sm"></i>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="Twitter">
+            <i class="fa-brands fa-x-twitter text-sm"></i>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="YouTube">
+            <i class="fa-brands fa-youtube text-sm"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Shop col -->
+      <div>
+        <p class="text-xs tracking-[0.25em] uppercase font-medium text-white/50 mb-5">Shop</p>
+        <ul class="space-y-3">
+          <li><a href="shop.html"                              class="footer-link text-sm text-white/75 font-sans">New Arrivals</a></li>
+          <li><a href="shop.html"                              class="footer-link text-sm text-white/75 font-sans">Bestsellers</a></li>
+          <li><a href="shop.html?category=Skincare"            class="footer-link text-sm text-white/75 font-sans">Skincare</a></li>
+          <li><a href="shop.html?category=Body%20Care"         class="footer-link text-sm text-white/75 font-sans">Body Care</a></li>
+          <li><a href="shop.html?category=Hair%20Care"         class="footer-link text-sm text-white/75 font-sans">Haircare</a></li>
+          <li><a href="shop.html?category=Fragrance"           class="footer-link text-sm text-white/75 font-sans">Fragrance</a></li>
+          <li><a href="shop.html?category=Gifts%20%26%20Sets"  class="footer-link text-sm text-white/75 font-sans">Gift Sets</a></li>
+        </ul>
+      </div>
+
+      <!-- Help col -->
+      <div>
+        <p class="text-xs tracking-[0.25em] uppercase font-medium text-white/50 mb-5">Help &amp; Info</p>
+        <ul class="space-y-3">
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">About Us</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Our Story</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Sustainability</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Careers</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Store Locator</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Policies col -->
+      <div>
+        <p class="text-xs tracking-[0.25em] uppercase font-medium text-white/50 mb-5">Policies</p>
+        <ul class="space-y-3">
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Shipping &amp; Delivery</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Returns &amp; Exchanges</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Terms &amp; Conditions</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Cookie Policy</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Accessibility</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Payment icons & copyright -->
+    <div class="border-t border-white/15 pt-8 flex flex-col md:flex-row justify-between items-center gap-5">
+      <p class="text-white/45 text-xs font-sans text-center md:text-left">
+        © 2026 The Body Shop International Limited. All rights reserved.
+      </p>
+      <div class="flex items-center gap-3">
+        <span class="text-white/40 text-[10px] tracking-wider uppercase font-sans mr-1">Secure Payments</span>
+        <i class="fa-brands fa-cc-visa text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+        <i class="fa-brands fa-cc-mastercard text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+        <i class="fa-brands fa-cc-amex text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+        <i class="fa-brands fa-cc-paypal text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════
+     GLOWBOT — FAB + FULL-HEIGHT DRAWER
+═══════════════════════════════════════════════════ -->
+
+<!-- FAB -->
+<button id="chatFab" aria-label="Open GlowBot AI"
+  class="fab-btn fixed bottom-6 right-6 z-[60] w-[62px] h-[62px] bg-brand text-white rounded-full flex items-center justify-center shadow-lg">
+  <i id="fabIcon" class="fa fa-comments text-2xl"></i>
+  <span class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></span>
+</button>
+
+<!-- Scrim overlay -->
+<div id="drawerOverlay" class="fixed inset-0 z-[55] bg-black/30 backdrop-blur-[2px]"></div>
+
+<!-- GlowBot AI Side Drawer -->
+<aside id="copilotDrawer"
+  class="drawer-closed fixed top-0 right-0 z-[60] h-full bg-white shadow-2xl flex flex-col"
+  aria-label="GlowBot AI">
+
+  <div class="bg-brand px-5 py-4 flex items-center gap-3 flex-shrink-0">
+    <div class="relative flex-shrink-0">
+      <div class="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74z"/>
+          <path d="M5 3l.5 1.5L7 5l-1.5.5L5 7l-.5-1.5L3 5l1.5-.5z" fill="white" stroke="none"/>
+          <path d="M19 14l.4 1.2 1.2.4-1.2.4-.4 1.2-.4-1.2-1.2-.4 1.2-.4z" fill="white" stroke="none"/>
+        </svg>
+      </div>
+      <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-brand"></span>
+    </div>
+    <div class="flex-1 min-w-0">
+      <p class="text-white text-sm font-semibold font-serif leading-tight">GlowBot AI ✨</p>
+      <p class="text-white/70 text-[11px] font-sans mt-0.5">Your Personal Beauty Expert</p>
+    </div>
+    <button id="closeChatBtn" aria-label="Close GlowBot AI"
+      class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors flex-shrink-0">
+      <i class="fa fa-times text-white text-sm"></i>
+    </button>
+  </div>
+
+  <div class="bg-gradient-to-r from-brand/5 to-emerald-50 border-b border-brand/10 px-5 py-2 flex items-center gap-2">
+    <span class="inline-flex items-center gap-1.5 text-[10px] text-brand/60 font-sans tracking-wider">
+      <i class="fa fa-shield-heart text-[9px] text-brand/50"></i>
+      Personalised · Cruelty-Free Picks · Always Honest
+    </span>
+  </div>
+
+  <!-- Messages area -->
+  <div id="chatMessages" class="chat-messages flex-1 overflow-y-auto px-4 py-5 space-y-4 bg-warm-gray/40">
+    <!-- Static welcome message -->
+    <div class="msg-bot flex items-end gap-2" id="welcomeMsg">
+      <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0">
+        <i class="fa fa-leaf text-brand text-xs"></i>
+      </div>
+      <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm max-w-[85%]">
+        <p class="text-gray-700 text-sm font-sans leading-relaxed">Hi! ✨ I'm <strong>GlowBot</strong>, your personal beauty expert. Tell me about your skin type or concern, and I'll recommend the perfect products for you.</p>
+        <p class="text-gray-400 text-[10px] font-sans mt-1.5">Just now</p>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2 pl-9" id="quickReplies">
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Dry Skin</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Oily Skin</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Anti-Ageing</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Acne-Prone</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Sensitive Skin</button>
+    </div>
+  </div>
+
+  <!-- Input area -->
+  <div class="flex-shrink-0 px-4 py-4 bg-white border-t border-gray-100">
+    <div class="flex items-center gap-2">
+      <button id="gpsBtn" title="Share my location"
+        class="w-9 h-9 flex items-center justify-center rounded-full border border-brand/30 text-brand hover:bg-brand/10 transition-colors flex-shrink-0">
+        <i class="fa fa-map-marker-alt text-sm"></i>
+      </button>
+      <input id="chatInput" type="text"
+        placeholder="Ask GlowBot about your skin…"
+        class="flex-1 bg-warm-gray rounded-full px-4 py-2.5 text-sm font-sans text-gray-700 placeholder:text-gray-400 border border-transparent focus:outline-none focus:border-brand/30 focus:bg-white transition-all" />
+      <button id="chatSendBtn" onclick="sendChatMessage()"
+        class="btn-primary w-10 h-10 bg-brand text-white rounded-full flex items-center justify-center flex-shrink-0">
+        <i class="fa fa-paper-plane text-sm"></i>
+      </button>
+    </div>
+    <p class="text-center text-[10px] text-gray-400 font-sans mt-2">AI responses are for guidance only. Always patch-test new products.</p>
+  </div>
+</aside>
+
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE SCRIPTS
+═══════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SESSION ID
+// ─────────────────────────────────────────────────────────────────────────────
+const sessionId = (() => {
+  const phone = localStorage.getItem('userPhone');
+  if (phone) return phone;
+  let guest = sessionStorage.getItem('guestSession');
+  if (!guest) {
+    guest = 'sess_' + Math.random().toString(36).slice(2, 11);
+    sessionStorage.setItem('guestSession', guest);
+  }
+  return guest;
+})();
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CHAT HISTORY — localStorage-backed persistence
+// ─────────────────────────────────────────────────────────────────────────────
+const HISTORY_KEY = `glowbotHistory_${sessionId}`;
+
+function loadRawHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
+  catch (_) { return []; }
+}
+
+function saveRawHistory(history) {
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); }
+  catch (_) { /* quota exceeded — fail silently */ }
+}
+
+function loadChatHistory() {
+  const history = loadRawHistory();
+  if (!history.length) return;
+
+  const quickReplies = document.getElementById('quickReplies');
+  if (quickReplies) quickReplies.style.display = 'none';
+
+  const container = document.getElementById('chatMessages');
+  if (!container) return;
+
+  const divider = document.createElement('div');
+  divider.className = 'flex items-center gap-2 my-2';
+  divider.innerHTML = `
+    <div class="flex-1 h-px bg-brand/10"></div>
+    <span class="text-[9px] text-brand/40 font-sans tracking-wider uppercase whitespace-nowrap">Previous conversation</span>
+    <div class="flex-1 h-px bg-brand/10"></div>`;
+  container.appendChild(divider);
+
+  history.forEach(entry => _renderMessage(entry.text, entry.role, entry.time, true));
+  container.scrollTop = container.scrollHeight;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MESSAGE RENDERING
+// ─────────────────────────────────────────────────────────────────────────────
+function _renderMessage(text, role, time, skipPersist) {
+  const container = document.getElementById('chatMessages');
+  if (!container) return;
+
+  const isBot = role === 'bot';
+  const now   = time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const wrapper = document.createElement('div');
+  wrapper.className = isBot ? 'msg-bot flex items-end gap-2' : 'msg-user flex justify-end';
+
+  if (isBot) {
+    wrapper.innerHTML = `
+      <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0">
+        <i class="fa fa-leaf text-brand text-xs"></i>
+      </div>
+      <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm max-w-[85%]">
+        <p class="text-gray-700 text-sm font-sans leading-relaxed">${text}</p>
+        <p class="text-gray-400 text-[10px] font-sans mt-1.5">${now}</p>
+      </div>`;
+  } else {
+    wrapper.innerHTML = `
+      <div class="bg-brand rounded-2xl rounded-br-sm px-4 py-3 shadow-sm max-w-[85%]">
+        <p class="text-white text-sm font-sans leading-relaxed">${escHtml(text)}</p>
+        <p class="text-white/50 text-[10px] font-sans mt-1.5 text-right">${now}</p>
+      </div>`;
+  }
+
+  container.appendChild(wrapper);
+  container.scrollTop = container.scrollHeight;
+
+  if (!skipPersist) {
+    const history = loadRawHistory();
+    history.push({ role, text, time: now });
+    saveRawHistory(history);
+  }
+}
+
+function appendMessage(text, role) {
+  _renderMessage(text, role, null, false);
+}
+
+function showTypingIndicator() {
+  const container = document.getElementById('chatMessages');
+  if (!container) return null;
+
+  const el = document.createElement('div');
+  el.id = 'typingIndicator';
+  el.className = 'msg-bot flex items-end gap-2';
+  el.innerHTML = `
+    <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0">
+      <i class="fa fa-leaf text-brand text-xs"></i>
+    </div>
+    <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
+      <div class="flex gap-1">
+        <span class="typing-dot w-2 h-2 bg-brand/40 rounded-full"></span>
+        <span class="typing-dot w-2 h-2 bg-brand/40 rounded-full"></span>
+        <span class="typing-dot w-2 h-2 bg-brand/40 rounded-full"></span>
+      </div>
+    </div>`;
+  container.appendChild(el);
+  container.scrollTop = container.scrollHeight;
+  return el;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CHAT — sendChatMessage with mock AI fallback
+// ─────────────────────────────────────────────────────────────────────────────
+async function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const text  = input ? input.value.trim() : '';
+  if (!text) return;
+
+  input.value = '';
+
+  const quickReplies = document.getElementById('quickReplies');
+  if (quickReplies) quickReplies.style.display = 'none';
+
+  appendMessage(text, 'user');
+  const typingEl = showTypingIndicator();
+
+  try {
+    const res = await fetch('http://localhost:8000/chat', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ session_id: sessionId, message: text }),
+    });
+
+    if (typingEl) typingEl.remove();
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+
+    const data  = await res.json();
+    const reply = data.reply || data.message || data.response
+      || 'I am having trouble connecting right now. Please try again in a moment! ✨';
+    appendMessage(reply, 'bot');
+
+  } catch (err) {
+    if (typingEl) typingEl.remove();
+
+    const textLower = text.toLowerCase();
+    let mockReply = "I'm having trouble reaching my server, but I highly recommend our bestselling Tea Tree range! ✨";
+    if (textLower.includes('dry') || textLower.includes('moisture')) {
+      mockReply = "For dry skin, our Vitamin E Moisture Cream or Shea Butter are intensely hydrating! 💧";
+    } else if (textLower.includes('oily') || textLower.includes('acne') || textLower.includes('pimple')) {
+      mockReply = "For oily or acne-prone skin, the Tea Tree line is an absolute lifesaver. The Tea Tree Facial Wash is a fan favorite! 🌿";
+    } else if (textLower.includes('hair') || textLower.includes('dandruff')) {
+      mockReply = "Our Ginger Scalp Care Shampoo is the #1 solution for flaky scalps. It's super soothing! 💆‍♀️";
+    } else if (textLower.includes('gift')) {
+      mockReply = "Our beautifully wrapped Gift Sets make perfect presents! Check out the British Rose collection. 🎁";
+    }
+    appendMessage(mockReply, 'bot');
+  }
+}
+
+function sendQuickReply(btn) {
+  const input = document.getElementById('chatInput');
+  if (input) input.value = btn.textContent.trim();
+  sendChatMessage();
+}
+
+function escHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DRAWER
+// ─────────────────────────────────────────────────────────────────────────────
+let _historyLoaded = false;
+
+function openDrawer() {
+  const drawer  = document.getElementById('copilotDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  const icon    = document.getElementById('fabIcon');
+  if (drawer)  { drawer.classList.remove('drawer-closed'); drawer.classList.add('drawer-open'); }
+  if (overlay) overlay.classList.add('overlay-visible');
+  if (icon)    { icon.classList.remove('fa-comments'); icon.classList.add('fa-times'); }
+  document.body.style.overflow = 'hidden';
+
+  if (!_historyLoaded) {
+    _historyLoaded = true;
+    loadChatHistory();
+  }
+}
+
+function closeDrawer() {
+  const drawer  = document.getElementById('copilotDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  const icon    = document.getElementById('fabIcon');
+  if (drawer)  { drawer.classList.add('drawer-closed'); drawer.classList.remove('drawer-open'); }
+  if (overlay) overlay.classList.remove('overlay-visible');
+  if (icon)    { icon.classList.add('fa-comments'); icon.classList.remove('fa-times'); }
+  document.body.style.overflow = '';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ORDERS — fetchOrders()
+// GET /api/orders?phone=<userPhone>
+// Falls back gracefully to the empty state if the endpoint is unavailable.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * statusConfig — maps API status strings to display labels, pill classes,
+ * and Font Awesome icon names so the UI stays consistent.
+ */
+const STATUS_CONFIG = {
+  delivered:  { label: 'Delivered',  cls: 'status-delivered',  icon: 'fa-circle-check' },
+  processing: { label: 'Processing', cls: 'status-processing', icon: 'fa-hourglass-half' },
+  shipped:    { label: 'Shipped',    cls: 'status-shipped',    icon: 'fa-truck' },
+  cancelled:  { label: 'Cancelled',  cls: 'status-cancelled',  icon: 'fa-circle-xmark' },
+};
+
+function getStatusConfig(raw) {
+  const key = (raw || '').toLowerCase().trim();
+  return STATUS_CONFIG[key] || { label: raw || 'Unknown', cls: 'status-processing', icon: 'fa-circle-dot' };
+}
+
+/**
+ * formatDate — converts any parseable date string to a readable format,
+ * e.g. "14 Mar 2025". Returns the raw string if parsing fails.
+ */
+function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  try {
+    return new Date(dateStr).toLocaleDateString('en-IN', {
+      day: 'numeric', month: 'short', year: 'numeric'
+    });
+  } catch (_) {
+    return dateStr;
+  }
+}
+
+/**
+ * renderOrders(orders) — builds and injects order card HTML.
+ * Each order is expected to have at minimum:
+ *   order_id | id, date | created_at, status, total | amount, items (array)
+ */
+function renderOrders(orders) {
+  const container = document.getElementById('ordersContainer');
+  if (!container) return;
+
+  container.innerHTML = orders.map(order => {
+    const orderId  = order.order_id || order.id || '—';
+    const date     = formatDate(order.date || order.created_at || order.order_date);
+    const total    = parseInt(order.total || order.amount || order.total_amount) || 0;
+    const items    = Array.isArray(order.items) ? order.items : [];
+    const itemCount = items.length || (order.item_count || 0);
+    const sc       = getStatusConfig(order.status);
+
+    // Build a compact items preview (up to 3 names, then "+ N more")
+    let itemsPreview = '';
+    if (items.length) {
+      const names = items.slice(0, 3).map(i => i.name || i.product_name || 'Item');
+      itemsPreview = names.join(', ');
+      if (items.length > 3) itemsPreview += ` +${items.length - 3} more`;
+    } else if (order.item_count) {
+      itemsPreview = `${order.item_count} item${order.item_count !== 1 ? 's' : ''}`;
+    }
+
+    return `
+      <div class="order-card p-5 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+          <!-- Left: order meta -->
+          <div class="flex items-start gap-4">
+            <div class="w-11 h-11 rounded-xl bg-brand-pale flex items-center justify-center flex-shrink-0 mt-0.5">
+              <i class="fa fa-bag-shopping text-brand text-base"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-2 mb-1">
+                <p class="text-sm font-semibold text-gray-800 font-sans">Order #${escHtml(String(orderId))}</p>
+                <span class="status-pill ${sc.cls}">
+                  <i class="fa ${sc.icon} text-[9px]"></i>
+                  ${escHtml(sc.label)}
+                </span>
+              </div>
+              <p class="text-xs text-gray-400 font-sans mb-1.5">${escHtml(date)}</p>
+              ${itemsPreview
+                ? `<p class="text-xs text-gray-500 font-sans truncate max-w-xs">${escHtml(itemsPreview)}</p>`
+                : ''}
+            </div>
+          </div>
+
+          <!-- Right: total + action -->
+          <div class="flex items-center justify-between sm:flex-col sm:items-end gap-3 sm:gap-2 pl-[60px] sm:pl-0">
+            <p class="text-base font-semibold text-brand font-sans">
+              ${total > 0 ? '₹' + total.toLocaleString('en-IN') : '—'}
+            </p>
+            <button
+              onclick="alert('Order detail view coming soon!')"
+              class="text-[11px] font-medium font-sans text-brand/70 hover:text-brand border border-brand/20 hover:border-brand/50 px-4 py-1.5 rounded-full transition-all whitespace-nowrap">
+              View Details
+            </button>
+          </div>
+
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/**
+ * showEmpty() — hides skeleton & container, reveals the empty state.
+ */
+function showEmpty() {
+  document.getElementById('ordersSkeleton').classList.add('hidden');
+  document.getElementById('ordersContainer').classList.add('hidden');
+  document.getElementById('ordersEmpty').classList.remove('hidden');
+}
+
+/**
+ * fetchOrders() — main entry point.
+ * Tries the real API; on any failure shows the empty state (never crashes).
+ */
+async function fetchOrders() {
+  const phone = localStorage.getItem('userPhone');
+
+  try {
+    const res = await fetch(
+      'http://localhost:8000/api/orders?phone=' + encodeURIComponent(phone || ''),
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const data   = await res.json();
+    const orders = Array.isArray(data) ? data : (data.orders || []);
+
+    // Hide skeleton in all branches
+    document.getElementById('ordersSkeleton').classList.add('hidden');
+
+    if (!orders.length) {
+      showEmpty();
+      return;
+    }
+
+    // We have real orders — render them
+    const container = document.getElementById('ordersContainer');
+    container.classList.remove('hidden');
+    renderOrders(orders);
+
+  } catch (err) {
+    // Backend not yet available — safe offline fallback
+    console.info('[Orders] API unavailable or returned an error; showing empty state.', err.message);
+    showEmpty();
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DOM CONTENT LOADED
+// ─────────────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ── Cart badge ────────────────────────────────────────────
+  const storedCount = parseInt(localStorage.getItem('cartCount') || '0', 10);
+  document.getElementById('cartCount').textContent = storedCount;
+
+  // ── Nav account label ─────────────────────────────────────
+  const name  = localStorage.getItem('userName') || 'Friend';
+  const label = document.getElementById('navAccountLabel');
+  if (label) label.textContent = name !== 'Friend' ? 'Hi, ' + name.split(' ')[0] : 'Account';
+
+  // ── Auth icon — always logged in on this page ────────────
+  document.getElementById('openAuthModal').addEventListener('click', function () {
+    window.location.href = localStorage.getItem('userPhone') ? 'account.html' : 'index.html';
+  });
+
+  // ── Sticky navbar shadow ──────────────────────────────────
+  window.addEventListener('scroll', function () {
+    const nb = document.getElementById('navbar');
+    nb.style.boxShadow = window.scrollY > 40 ? '0 4px 24px rgba(0,66,54,0.10)' : '';
+  });
+
+  // ── Global search ─────────────────────────────────────────
+  document.getElementById('globalSearch').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      const val = this.value.trim();
+      if (val) window.location.href = 'shop.html?search=' + encodeURIComponent(val);
+    }
+  });
+
+  // ── GlowBot FAB & drawer ──────────────────────────────────
+  const fab       = document.getElementById('chatFab');
+  const closeChat = document.getElementById('closeChatBtn');
+  const drawerOv  = document.getElementById('drawerOverlay');
+  const chatInput = document.getElementById('chatInput');
+
+  if (fab) {
+    fab.addEventListener('click', () => {
+      const drawer = document.getElementById('copilotDrawer');
+      drawer && drawer.classList.contains('drawer-open') ? closeDrawer() : openDrawer();
+    });
+  }
+  if (closeChat) closeChat.addEventListener('click', closeDrawer);
+  if (drawerOv)  drawerOv.addEventListener('click', closeDrawer);
+  if (chatInput) chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendChatMessage(); });
+
+  // ── GPS pin ───────────────────────────────────────────────
+  const gpsBtn = document.getElementById('gpsBtn');
+  if (gpsBtn) {
+    gpsBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) { alert('Geolocation is not supported by your browser.'); return; }
+      gpsBtn.disabled = true;
+      gpsBtn.innerHTML = '<i class="fa fa-spinner fa-spin text-sm"></i>';
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude.toFixed(6);
+          const lon = pos.coords.longitude.toFixed(6);
+          const input = document.getElementById('chatInput');
+          if (input) input.value = `Find stores near Latitude: ${lat}, Longitude: ${lon}`;
+          gpsBtn.disabled = false;
+          gpsBtn.innerHTML = '<i class="fa fa-map-marker-alt text-sm"></i>';
+          sendChatMessage();
+        },
+        (err) => {
+          gpsBtn.disabled = false;
+          gpsBtn.innerHTML = '<i class="fa fa-map-marker-alt text-sm"></i>';
+          const msgs = { 1: 'Location access denied.', 2: 'Location unavailable.', 3: 'Request timed out.' };
+          alert(msgs[err.code] || 'Could not retrieve your location.');
+        },
+        { timeout: 10000, maximumAge: 60000 }
+      );
+    });
+  }
+
+  // ── Fetch orders on page load ─────────────────────────────
+  fetchOrders();
+
+}); // end DOMContentLoaded
+
+</script>
+
+</body>
+</html>

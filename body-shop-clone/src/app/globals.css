@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background-color: #fff;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Announcement ticker */
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 32s linear infinite;
+}
+.ticker-track:hover { animation-play-state: paused; }
+
+/* Hero slider dots */
+.dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.5); border:none; cursor:pointer; transition:background 0.2s; padding:0; }
+.dot.active { background:#fff; width:24px; border-radius:4px; }
+
+/* Product carousel */
+.carousel-track { display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; padding-bottom:4px; }
+.carousel-track::-webkit-scrollbar { display:none; }
+.carousel-item { scroll-snap-align:start; flex-shrink:0; width:260px; }
+
+/* Product card */
+.pcard { background:#fff; border:1px solid #e8e0d5; border-radius:4px; overflow:hidden; text-decoration:none; color:inherit; display:flex; flex-direction:column; transition:box-shadow 0.2s; }
+.pcard:hover { box-shadow:0 4px 20px rgba(0,0,0,0.12); }
+.pcard:hover .pcard-add { opacity:1; transform:translateY(0); }
+.pcard-add { opacity:0; transform:translateY(6px); transition:opacity 0.2s, transform 0.2s; }
+
+/* Nav hover underline */
+.nav-cat:hover { color: #006e3c !important; }
+.nav-cat::after { content:''; display:block; width:0; height:2px; background:#006e3c; transition:width 0.2s; }
+.nav-cat:hover::after { width:100%; }
+
+/* Mega menu */
+.mega-menu { display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:#fff; box-shadow:0 8px 32px rgba(0,0,0,0.12); border-top:3px solid #006e3c; z-index:300; min-width:640px; padding:28px 32px; }
+.nav-has-mega:hover .mega-menu { display:flex; }
+
+/* Chat bounce/ping */
+@keyframes bounce { 0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)} }
+@keyframes ping { 75%,100%{transform:scale(1.9);opacity:0} }
+
+/* Add to bag slide */
+.add-bag { transform:translateY(100%); transition:transform 0.2s ease; }
+.pcard:hover .add-bag { transform:translateY(0); }

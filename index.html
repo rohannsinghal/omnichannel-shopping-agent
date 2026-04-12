@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Body Shop | Natural Beauty &amp; Skincare</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#004236',
+            'brand-light': '#005a48',
+            'brand-pale': '#e8f0ee',
+            cream: '#faf8f5',
+            'warm-gray': '#f5f2ef',
+          },
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'serif'],
+            sans: ['Jost', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Jost', sans-serif; background: #faf8f5; }
+
+    /* Promo bar ticker */
+    .ticker-wrap { overflow: hidden; }
+    .ticker { display: flex; gap: 3rem; animation: ticker 28s linear infinite; white-space: nowrap; }
+    .ticker:hover { animation-play-state: paused; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* Navbar */
+    .navbar-glass {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(250, 248, 245, 0.92);
+      border-bottom: 1px solid rgba(0,66,54,0.08);
+    }
+
+    /* Hero Carousel */
+    #heroCarousel {
+      position: relative;
+      width: 100%;
+      min-height: 88vh;
+      overflow: hidden;
+      background: #004236;
+    }
+    .carousel-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1;
+    }
+    .carousel-slide.active {
+      opacity: 1;
+      z-index: 2;
+    }
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      font-size: 18px;
+    }
+    .carousel-arrow:hover {
+      background: rgba(255,255,255,0.32);
+      transform: translateY(-50%) scale(1.08);
+    }
+    .carousel-arrow-left  { left: 20px; }
+    .carousel-arrow-right { right: 20px; }
+    .carousel-dots {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+    }
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+    }
+    .carousel-dot.active {
+      background: #fff;
+      transform: scale(1.3);
+    }
+    /* Hero text overlay on carousel */
+    .hero-text-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      background: linear-gradient(135deg, rgba(0,66,54,0.55) 0%, rgba(0,0,0,0.15) 60%, transparent 100%);
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+    }
+    .hero-text-overlay .hero-cta { pointer-events: auto; }
+
+    /* Product card */
+    .product-card { transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.35s ease; }
+    .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,66,54,0.14); }
+    .product-card:hover .card-overlay { opacity: 1; }
+    .card-overlay { opacity: 0; transition: opacity 0.3s ease; }
+    .product-img { transition: transform 0.5s ease; }
+    .product-card:hover .product-img { transform: scale(1.05); }
+
+    /* FAB */
+    .fab-btn { box-shadow: 0 8px 32px rgba(0,66,54,0.38); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .fab-btn:hover { transform: scale(1.08); box-shadow: 0 12px 40px rgba(0,66,54,0.45); }
+
+    /* Copilot Side Drawer */
+    #copilotDrawer {
+      width: 450px;
+      max-width: 100vw;
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @media (max-width: 480px) {
+      #copilotDrawer { width: 100vw; }
+    }
+    #copilotDrawer.drawer-closed { transform: translateX(100%); }
+    #copilotDrawer.drawer-open  { transform: translateX(0); }
+
+    /* Drawer overlay */
+    #drawerOverlay {
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      opacity: 0;
+    }
+    #drawerOverlay.overlay-visible {
+      pointer-events: auto;
+      opacity: 1;
+    }
+
+    /* Modal */
+    .modal-backdrop { transition: opacity 0.25s ease; }
+    .modal-box { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease; }
+    .modal-backdrop.hidden { display: none; }
+
+    /* Input focus */
+    .field-input:focus { outline: none; border-color: #004236; box-shadow: 0 0 0 3px rgba(0,66,54,0.12); }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* Chat messages */
+    .chat-messages { scroll-behavior: smooth; }
+    .msg-bot { animation: slideInLeft 0.3s ease; }
+    .msg-user { animation: slideInRight 0.3s ease; }
+    @keyframes slideInLeft { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+    @keyframes slideInRight { from { opacity:0; transform:translateX(10px); } to { opacity:1; transform:none; } }
+
+    /* Category pill hover */
+    .cat-pill { transition: background 0.2s, color 0.2s, transform 0.2s; }
+    .cat-pill:hover { background: #004236; color: #fff; transform: translateY(-2px); }
+
+    /* Btn primary */
+    .btn-primary { transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+    .btn-primary:hover { background: #005a48; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,66,54,0.3); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* Btn outline */
+    .btn-outline { transition: background 0.2s, color 0.2s, transform 0.15s; }
+    .btn-outline:hover { background: #004236; color: #fff; transform: translateY(-1px); }
+
+    /* Nav links */
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:#004236; transition: width 0.25s ease; }
+    .nav-link:hover::after { width:100%; }
+
+    /* Search bar */
+    .search-bar:focus { outline:none; border-color:#004236; }
+
+    /* Footer links */
+    .footer-link { transition: color 0.2s, padding-left 0.2s; }
+    .footer-link:hover { color:#fff; padding-left: 4px; }
+
+    /* Typing dots */
+    .typing-dot { animation: typingBounce 1.2s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce { 0%,60%,100% { transform:translateY(0); } 30% { transform:translateY(-5px); } }
+
+    /* Scrollbar for drawer messages */
+    #chatMessages::-webkit-scrollbar { width: 4px; }
+    #chatMessages::-webkit-scrollbar-track { background: transparent; }
+    #chatMessages::-webkit-scrollbar-thumb { background: rgba(0,66,54,0.18); border-radius: 4px; }
+
+    /* GlowBot AI sparkle badge */
+    .glowbot-badge {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* Google Sign-In button */
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 11px 16px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .google-btn:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #9ca3af;
+      font-size: 0.75rem;
+      font-family: 'Jost', sans-serif;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: 4px 0;
+    }
+    .or-divider::before, .or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+  </style>
+</head>
+<body class="bg-cream text-gray-800">
+
+<!-- ═══════════════════════════════════════════════════
+     PROMO BAR
+     FIX 4: "₹999" → "₹2000" to match cart threshold logic
+═══════════════════════════════════════════════════ -->
+<div class="bg-brand text-white text-xs py-2.5 overflow-hidden ticker-wrap">
+  <div class="ticker">
+    <span>✦ FREE SHIPPING ON ORDERS OVER ₹2000</span>
+    <span>✦ CRUELTY FREE &amp; 100% VEGETARIAN</span>
+    <span>✦ ETHICALLY SOURCED INGREDIENTS WORLDWIDE</span>
+    <span>✦ EARN LOVE YOUR BODY™ REWARDS ON EVERY PURCHASE</span>
+    <span>✦ NEW: HEMP COLLECTION — DEEPLY NOURISHING</span>
+    <span>✦ FREE SHIPPING ON ORDERS OVER ₹2000</span>
+    <span>✦ CRUELTY FREE &amp; 100% VEGETARIAN</span>
+    <span>✦ ETHICALLY SOURCED INGREDIENTS WORLDWIDE</span>
+    <span>✦ EARN LOVE YOUR BODY™ REWARDS ON EVERY PURCHASE</span>
+    <span>✦ NEW: HEMP COLLECTION — DEEPLY NOURISHING</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════ -->
+<header id="navbar" class="sticky top-0 z-50 navbar-glass">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center gap-6">
+
+    <a href="index.html" class="flex-shrink-0 flex items-center gap-2.5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" width="180" height="46" aria-label="The Body Shop">
+        <rect x="0" y="0" width="220" height="56" rx="4" fill="#004236"/>
+        <g transform="translate(14, 10)">
+          <ellipse cx="8" cy="18" rx="5" ry="9" fill="none" stroke="#fff" stroke-width="1.4" transform="rotate(-30 8 18)"/>
+          <ellipse cx="8" cy="18" rx="5" ry="9" fill="none" stroke="#fff" stroke-width="1.4" transform="rotate(30 8 18)"/>
+          <ellipse cx="8" cy="18" rx="5" ry="9" fill="none" stroke="#fff" stroke-width="1.4"/>
+          <circle cx="8" cy="18" r="2.2" fill="#fff"/>
+        </g>
+        <text x="44" y="22" font-family="'Cormorant Garamond', Georgia, serif" font-size="14" font-weight="600" fill="#ffffff" letter-spacing="1.5">THE BODY SHOP</text>
+        <text x="44" y="37" font-family="'Jost', Arial, sans-serif" font-size="7.5" font-weight="400" fill="rgba(255,255,255,0.6)" letter-spacing="2.5">EST. 1976 · AGAINST ANIMAL TESTING</text>
+      </svg>
+    </a>
+
+    <!-- Nav links (desktop) -->
+    <nav class="hidden lg:flex items-center gap-7 ml-6">
+      <a href="shop.html?category=Skincare" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Skincare</a>
+      <a href="shop.html?category=Body Care" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Body</a>
+      <a href="shop.html?category=Hair Care" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Hair</a>
+      <a href="shop.html?category=Fragrance" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Fragrance</a>
+      <a href="shop.html?category=Gifts %26 Sets" class="nav-link text-sm font-medium text-gray-700 hover:text-brand transition-colors">Gifts</a>
+      <a href="shop.html?sale=true" class="nav-link text-sm font-medium text-brand font-semibold transition-colors">Sale</a>
+    </nav>
+
+    <div class="flex-1"></div>
+
+    <!-- Search -->
+    <div class="hidden md:flex items-center bg-warm-gray rounded-full px-4 py-2 gap-2 w-64 border border-transparent hover:border-brand/20 transition-colors">
+      <i class="fa fa-search text-brand/50 text-sm"></i>
+      <input
+        id="globalSearch"
+        type="text"
+        placeholder="Search products…"
+        class="search-bar bg-transparent text-sm flex-1 border-none font-sans placeholder:text-gray-400"
+      />
+    </div>
+
+    <!-- Icons -->
+    <div class="flex items-center gap-4 ml-2">
+      <button id="openAuthModal" class="relative group flex flex-col items-center" aria-label="Account">
+        <i class="fa fa-user text-brand text-lg group-hover:scale-110 transition-transform"></i>
+        <span id="navAccountLabel" class="text-[9px] text-brand/60 font-sans mt-0.5 hidden lg:block">Account</span>
+      </button>
+      <a href="cart.html" class="relative group flex flex-col items-center" aria-label="Cart">
+        <span class="relative">
+          <i class="fa fa-shopping-bag text-brand text-lg group-hover:scale-110 transition-transform"></i>
+          <span id="cartCount" class="absolute -top-2 -right-2 bg-brand text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </span>
+        <span class="text-[9px] text-brand/60 font-sans mt-0.5 hidden lg:block">Bag</span>
+      </a>
+      <!-- Mobile menu -->
+      <button class="lg:hidden text-brand ml-1" aria-label="Menu">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════
+     HERO IMAGE CAROUSEL
+═══════════════════════════════════════════════════ -->
+<section id="heroCarousel" aria-label="Hero image carousel">
+
+  <!-- Slides -->
+  <div class="carousel-slide active" id="slide-0">
+    <img src="./hero-1.jpg" alt="Hero image 1 — Nature's finest for you" />
+  </div>
+  <div class="carousel-slide" id="slide-1">
+    <img src="./hero-2.jpg" alt="Hero image 2 — Ethically sourced beauty" />
+  </div>
+  <div class="carousel-slide" id="slide-2">
+    <img src="./hero-3.jpg" alt="Hero image 3 — Cruelty-free skincare" />
+  </div>
+
+  <!-- Left arrow -->
+  <button class="carousel-arrow carousel-arrow-left" id="carouselPrev" aria-label="Previous slide">&#8249;</button>
+  <!-- Right arrow -->
+  <button class="carousel-arrow carousel-arrow-right" id="carouselNext" aria-label="Next slide">&#8250;</button>
+
+  <!-- Dot indicators -->
+  <div class="carousel-dots" id="carouselDots">
+    <button class="carousel-dot active" data-index="0" aria-label="Go to slide 1"></button>
+    <button class="carousel-dot" data-index="1" aria-label="Go to slide 2"></button>
+    <button class="carousel-dot" data-index="2" aria-label="Go to slide 3"></button>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 right-1/2 translate-x-20 flex flex-col items-center gap-2 animate-bounce z-10">
+    <span class="text-white/60 text-[10px] tracking-widest uppercase font-sans">Scroll</span>
+    <i class="fa fa-chevron-down text-white/60 text-xs"></i>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     CATEGORY PILLS → shop.html?category=…
+═══════════════════════════════════════════════════ -->
+<section class="bg-white py-8 border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href="shop.html?search=moisturiser"  class="cat-pill border border-brand/30 text-brand text-xs font-medium tracking-wider uppercase px-6 py-2.5 rounded-full">Moisturisers</a>
+      <a href="shop.html?search=serum"        class="cat-pill border border-brand/30 text-brand text-xs font-medium tracking-wider uppercase px-6 py-2.5 rounded-full">Serums</a>
+      <a href="shop.html?search=body+butter"  class="cat-pill border border-brand/30 text-brand text-xs font-medium tracking-wider uppercase px-6 py-2.5 rounded-full">Body Butter</a>
+      <a href="shop.html?search=cleanser"     class="cat-pill border border-brand/30 text-brand text-xs font-medium tracking-wider uppercase px-6 py-2.5 rounded-full">Cleansers</a>
+      <a href="shop.html?search=wash"         class="cat-pill border border-brand/30 text-brand text-xs font-medium tracking-wider uppercase px-6 py-2.5 rounded-full">Shower Gels</a>
+      <a href="shop.html?search=lip"          class="cat-pill border border-brand/30 text-brand text-xs font-medium tracking-wider uppercase px-6 py-2.5 rounded-full">Lip Care</a>
+      <a href="shop.html?search=mask"         class="cat-pill border border-brand/30 text-brand text-xs font-medium tracking-wider uppercase px-6 py-2.5 rounded-full">Face Masks</a>
+      <a href="shop.html?search=sun"          class="cat-pill border border-brand/30 text-brand text-xs font-medium tracking-wider uppercase px-6 py-2.5 rounded-full">Sun Care</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     TRENDING PRODUCTS
+     TBS_006, TBS_029, TBS_008, TBS_017, TBS_037, TBS_014
+═══════════════════════════════════════════════════ -->
+<section id="products" class="py-20 bg-cream">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center mb-14 reveal">
+      <p class="text-brand text-xs tracking-[0.35em] uppercase font-sans font-medium mb-3">What's Hot Right Now</p>
+      <h2 class="font-serif text-5xl md:text-6xl font-light text-gray-900">Trending <em>Products</em></h2>
+      <div class="w-12 h-px bg-brand mx-auto mt-5"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Product 1 · TBS_006 -->
+      <div class="product-card bg-white rounded-2xl overflow-hidden group cursor-pointer reveal">
+        <div class="relative overflow-hidden aspect-[4/5]">
+          <img src="./products/TBS_006.jpg" alt="Vitamin C Glow Boosting Moisturiser 50ml" class="product-img w-full h-full object-cover" />
+          <div class="card-overlay absolute inset-0 bg-brand/10 flex items-end p-5">
+            <span class="bg-white/95 text-brand text-xs font-medium tracking-wider uppercase px-4 py-2 rounded-full">Quick View</span>
+          </div>
+          <span class="absolute top-4 left-4 bg-brand text-white text-[10px] font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full">Bestseller</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-brand/60 uppercase tracking-wider font-medium mb-1">Vitamin C Range · TBS_006</p>
+          <a href="product.html?id=TBS_006" class="font-serif text-xl font-semibold text-gray-900 hover:text-brand transition-colors leading-snug block mb-1">
+            Vitamin C Glow Boosting Moisturiser
+          </a>
+          <p class="text-xs text-gray-500 font-sans mb-4">50ml · Brightening Formula</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-lg font-semibold text-brand">₹2,695</span>
+            </div>
+            <div class="flex text-amber-400 text-xs gap-0.5">
+              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-alt"></i>
+              <span class="text-gray-400 ml-1">(421)</span>
+            </div>
+          </div>
+          <button onclick="addToCart(this, 'TBS_006')" class="btn-primary mt-4 w-full bg-brand text-white text-xs font-medium tracking-widest uppercase py-3 rounded-full flex items-center justify-center gap-2">
+            <i class="fa fa-bag-shopping text-xs"></i> Add to Bag
+          </button>
+        </div>
+      </div>
+
+      <!-- Product 2 · TBS_029 -->
+      <div class="product-card bg-white rounded-2xl overflow-hidden group cursor-pointer reveal" style="transition-delay:0.1s">
+        <div class="relative overflow-hidden aspect-[4/5]">
+          <img src="./products/TBS_029.jpg" alt="Avocado Body Butter 200ml" class="product-img w-full h-full object-cover" />
+          <div class="card-overlay absolute inset-0 bg-brand/10 flex items-end p-5">
+            <span class="bg-white/95 text-brand text-xs font-medium tracking-wider uppercase px-4 py-2 rounded-full">Quick View</span>
+          </div>
+          <span class="absolute top-4 left-4 bg-amber-500 text-white text-[10px] font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full">Fan Fave</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-brand/60 uppercase tracking-wider font-medium mb-1">Avocado Collection · TBS_029</p>
+          <a href="product.html?id=TBS_029" class="font-serif text-xl font-semibold text-gray-900 hover:text-brand transition-colors leading-snug block mb-1">
+            Avocado Body Butter
+          </a>
+          <p class="text-xs text-gray-500 font-sans mb-4">200ml · Intensive Nourishment</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-lg font-semibold text-brand">₹1,495</span>
+            </div>
+            <div class="flex text-amber-400 text-xs gap-0.5">
+              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+              <span class="text-gray-400 ml-1">(867)</span>
+            </div>
+          </div>
+          <button onclick="addToCart(this, 'TBS_029')" class="btn-primary mt-4 w-full bg-brand text-white text-xs font-medium tracking-widest uppercase py-3 rounded-full flex items-center justify-center gap-2">
+            <i class="fa fa-bag-shopping text-xs"></i> Add to Bag
+          </button>
+        </div>
+      </div>
+
+      <!-- Product 3 · TBS_008 -->
+      <div class="product-card bg-white rounded-2xl overflow-hidden group cursor-pointer reveal" style="transition-delay:0.2s">
+        <div class="relative overflow-hidden aspect-[4/5]">
+          <img src="./products/TBS_008.jpg" alt="Tea Tree Skin Clearing Facial Wash 250ml" class="product-img w-full h-full object-cover" />
+          <div class="card-overlay absolute inset-0 bg-brand/10 flex items-end p-5">
+            <span class="bg-white/95 text-brand text-xs font-medium tracking-wider uppercase px-4 py-2 rounded-full">Quick View</span>
+          </div>
+          <span class="absolute top-4 left-4 bg-brand text-white text-[10px] font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full">New Arrival</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-brand/60 uppercase tracking-wider font-medium mb-1">Tea Tree Range · TBS_008</p>
+          <a href="product.html?id=TBS_008" class="font-serif text-xl font-semibold text-gray-900 hover:text-brand transition-colors leading-snug block mb-1">
+            Tea Tree Skin Clearing Facial Wash
+          </a>
+          <p class="text-xs text-gray-500 font-sans mb-4">250ml · Purifying Formula</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-lg font-semibold text-brand">₹895</span>
+            </div>
+            <div class="flex text-amber-400 text-xs gap-0.5">
+              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-alt"></i>
+              <span class="text-gray-400 ml-1">(312)</span>
+            </div>
+          </div>
+          <button onclick="addToCart(this, 'TBS_008')" class="btn-primary mt-4 w-full bg-brand text-white text-xs font-medium tracking-widest uppercase py-3 rounded-full flex items-center justify-center gap-2">
+            <i class="fa fa-bag-shopping text-xs"></i> Add to Bag
+          </button>
+        </div>
+      </div>
+
+      <!-- Product 4 · TBS_017 -->
+      <div class="product-card bg-white rounded-2xl overflow-hidden group cursor-pointer reveal" style="transition-delay:0.05s">
+        <div class="relative overflow-hidden aspect-[4/5]">
+          <img src="./products/TBS_017.jpg" alt="British Rose Body Butter 200ml" class="product-img w-full h-full object-cover" />
+          <div class="card-overlay absolute inset-0 bg-brand/10 flex items-end p-5">
+            <span class="bg-white/95 text-brand text-xs font-medium tracking-wider uppercase px-4 py-2 rounded-full">Quick View</span>
+          </div>
+          <span class="absolute top-4 left-4 bg-rose-500 text-white text-[10px] font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full">Fan Fave</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-brand/60 uppercase tracking-wider font-medium mb-1">British Rose · TBS_017</p>
+          <a href="product.html?id=TBS_017" class="font-serif text-xl font-semibold text-gray-900 hover:text-brand transition-colors leading-snug block mb-1">
+            British Rose Body Butter
+          </a>
+          <p class="text-xs text-gray-500 font-sans mb-4">200ml · Deeply Moisturising</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-lg font-semibold text-brand">₹1,495</span>
+            </div>
+            <div class="flex text-amber-400 text-xs gap-0.5">
+              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+              <span class="text-gray-400 ml-1">(198)</span>
+            </div>
+          </div>
+          <button onclick="addToCart(this, 'TBS_017')" class="btn-primary mt-4 w-full bg-brand text-white text-xs font-medium tracking-widest uppercase py-3 rounded-full flex items-center justify-center gap-2">
+            <i class="fa fa-bag-shopping text-xs"></i> Add to Bag
+          </button>
+        </div>
+      </div>
+
+      <!-- Product 5 · TBS_037 -->
+      <div class="product-card bg-white rounded-2xl overflow-hidden group cursor-pointer reveal" style="transition-delay:0.15s">
+        <div class="relative overflow-hidden aspect-[4/5]">
+          <img src="./products/TBS_037.jpg" alt="Ginger Anti-Dandruff Shampoo 250ml" class="product-img w-full h-full object-cover" />
+          <div class="card-overlay absolute inset-0 bg-brand/10 flex items-end p-5">
+            <span class="bg-white/95 text-brand text-xs font-medium tracking-wider uppercase px-4 py-2 rounded-full">Quick View</span>
+          </div>
+          <span class="absolute top-4 left-4 bg-amber-500 text-white text-[10px] font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full">20% Off</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-brand/60 uppercase tracking-wider font-medium mb-1">Ginger Haircare · TBS_037</p>
+          <a href="product.html?id=TBS_037" class="font-serif text-xl font-semibold text-gray-900 hover:text-brand transition-colors leading-snug block mb-1">
+            Ginger Anti-Dandruff Shampoo
+          </a>
+          <p class="text-xs text-gray-500 font-sans mb-4">250ml · Scalp Soothing</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-lg font-semibold text-brand">₹615</span>
+            </div>
+            <div class="flex text-amber-400 text-xs gap-0.5">
+              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-alt"></i>
+              <span class="text-gray-400 ml-1">(543)</span>
+            </div>
+          </div>
+          <button onclick="addToCart(this, 'TBS_037')" class="btn-primary mt-4 w-full bg-brand text-white text-xs font-medium tracking-widest uppercase py-3 rounded-full flex items-center justify-center gap-2">
+            <i class="fa fa-bag-shopping text-xs"></i> Add to Bag
+          </button>
+        </div>
+      </div>
+
+      <!-- Product 6 · TBS_014 -->
+      <div class="product-card bg-white rounded-2xl overflow-hidden group cursor-pointer reveal" style="transition-delay:0.25s">
+        <div class="relative overflow-hidden aspect-[4/5]">
+          <img src="./products/TBS_014.jpg" alt="Edelweiss Daily Serum Concentrate 30ml" class="product-img w-full h-full object-cover" />
+          <div class="card-overlay absolute inset-0 bg-brand/10 flex items-end p-5">
+            <span class="bg-white/95 text-brand text-xs font-medium tracking-wider uppercase px-4 py-2 rounded-full">Quick View</span>
+          </div>
+          <span class="absolute top-4 left-4 bg-brand text-white text-[10px] font-semibold tracking-wider uppercase px-3 py-1.5 rounded-full">Premium</span>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-brand/60 uppercase tracking-wider font-medium mb-1">Edelweiss Range · TBS_014</p>
+          <a href="product.html?id=TBS_014" class="font-serif text-xl font-semibold text-gray-900 hover:text-brand transition-colors leading-snug block mb-1">
+            Edelweiss Daily Serum Concentrate
+          </a>
+          <p class="text-xs text-gray-500 font-sans mb-4">30ml · Youth-Activating</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-lg font-semibold text-brand">₹3,995</span>
+            </div>
+            <div class="flex text-amber-400 text-xs gap-0.5">
+              <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+              <span class="text-gray-400 ml-1">(276)</span>
+            </div>
+          </div>
+          <button onclick="addToCart(this, 'TBS_014')" class="btn-primary mt-4 w-full bg-brand text-white text-xs font-medium tracking-widest uppercase py-3 rounded-full flex items-center justify-center gap-2">
+            <i class="fa fa-bag-shopping text-xs"></i> Add to Bag
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-14">
+      <a href="shop.html" class="btn-outline border-2 border-brand text-brand text-sm font-medium tracking-widest uppercase px-10 py-4 rounded-full inline-flex items-center gap-3">
+        View All Products <i class="fa fa-arrow-right text-xs"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     VALUES BANNER
+═══════════════════════════════════════════════════ -->
+<section class="bg-brand py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center">
+          <i class="fa fa-leaf text-white text-lg"></i>
+        </div>
+        <p class="text-white font-serif text-lg font-light">100% Vegetarian</p>
+        <p class="text-white/60 text-xs font-sans leading-relaxed">All our formulas are vegetarian certified</p>
+      </div>
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center">
+          <i class="fa fa-heart text-white text-lg"></i>
+        </div>
+        <p class="text-white font-serif text-lg font-light">Cruelty Free</p>
+        <p class="text-white/60 text-xs font-sans leading-relaxed">Against animal testing since 1976</p>
+      </div>
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center">
+          <i class="fa fa-globe text-white text-lg"></i>
+        </div>
+        <p class="text-white font-serif text-lg font-light">Ethically Sourced</p>
+        <p class="text-white/60 text-xs font-sans leading-relaxed">Community Fair Trade ingredients</p>
+      </div>
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center">
+          <i class="fa fa-recycle text-white text-lg"></i>
+        </div>
+        <p class="text-white font-serif text-lg font-light">Sustainable</p>
+        <p class="text-white/60 text-xs font-sans leading-relaxed">Packaging made with recycled materials</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     NEWSLETTER
+═══════════════════════════════════════════════════ -->
+<section class="py-20 bg-brand-pale">
+  <div class="max-w-2xl mx-auto px-6 text-center reveal">
+    <p class="text-brand text-xs tracking-[0.3em] uppercase font-sans font-medium mb-3">Stay in the Loop</p>
+    <h2 class="font-serif text-4xl md:text-5xl font-light text-brand mb-4">Get 10% off your <em>first order</em></h2>
+    <p class="text-brand/70 text-sm font-sans mb-8 leading-relaxed">Subscribe to our newsletter for exclusive offers, skincare tips, and new arrivals.</p>
+    <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+      <input type="email" placeholder="Your email address" class="flex-1 px-5 py-3.5 rounded-full border border-brand/20 bg-white text-sm font-sans focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/10" />
+      <button class="btn-primary bg-brand text-white text-sm font-medium tracking-wider px-7 py-3.5 rounded-full whitespace-nowrap">
+        Subscribe
+      </button>
+    </div>
+    <p class="text-brand/40 text-xs mt-4 font-sans">No spam. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════ -->
+<footer class="bg-brand text-white">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+
+      <!-- Brand col -->
+      <div class="lg:col-span-1">
+        <div class="mb-5">
+          <p class="font-serif text-2xl font-semibold">The Body Shop</p>
+          <p class="text-white/50 text-[10px] tracking-[0.25em] uppercase mt-0.5">Est. 1976</p>
+        </div>
+        <p class="text-white/65 text-sm font-sans leading-relaxed mb-6">
+          We believe in business as a force for good. Cruelty-free, ethically sourced, and made with love for people and planet.
+        </p>
+        <div class="flex gap-4">
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="Instagram">
+            <i class="fa-brands fa-instagram text-sm"></i>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f text-sm"></i>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="Twitter">
+            <i class="fa-brands fa-x-twitter text-sm"></i>
+          </a>
+          <a href="#" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-brand transition-all duration-200" aria-label="YouTube">
+            <i class="fa-brands fa-youtube text-sm"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Shop col -->
+      <div>
+        <p class="text-xs tracking-[0.25em] uppercase font-medium text-white/50 mb-5">Shop</p>
+        <ul class="space-y-3">
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">New Arrivals</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Bestsellers</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Skincare</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Body Care</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Haircare</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Fragrance</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Gift Sets</a></li>
+        </ul>
+      </div>
+
+      <!-- Help col -->
+      <div>
+        <p class="text-xs tracking-[0.25em] uppercase font-medium text-white/50 mb-5">Help &amp; Info</p>
+        <ul class="space-y-3">
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">About Us</a></li>
+          <li><a href="story.html" class="footer-link text-sm text-white/75 font-sans">Our Story</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Sustainability</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Careers</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Store Locator</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Policies col -->
+      <div>
+        <p class="text-xs tracking-[0.25em] uppercase font-medium text-white/50 mb-5">Policies</p>
+        <ul class="space-y-3">
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Shipping &amp; Delivery</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Returns &amp; Exchanges</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Terms &amp; Conditions</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Privacy Policy</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Cookie Policy</a></li>
+          <li><a href="#" class="footer-link text-sm text-white/75 font-sans">Accessibility</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/15 pt-8 flex flex-col md:flex-row justify-between items-center gap-5">
+      <p class="text-white/45 text-xs font-sans text-center md:text-left">
+        © 2026 The Body Shop International Limited. All rights reserved.
+      </p>
+      <div class="flex items-center gap-3">
+        <span class="text-white/40 text-[10px] tracking-wider uppercase font-sans mr-1">Secure Payments</span>
+        <i class="fa-brands fa-cc-visa text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+        <i class="fa-brands fa-cc-mastercard text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+        <i class="fa-brands fa-cc-amex text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+        <i class="fa-brands fa-cc-paypal text-white/50 text-2xl hover:text-white/80 transition-colors"></i>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════
+     AUTH MODAL
+═══════════════════════════════════════════════════ -->
+<div id="authModal" class="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="modalOverlay"></div>
+  <div class="modal-box relative bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 z-10">
+
+    <button id="closeAuthModal" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors" aria-label="Close">
+      <i class="fa fa-times text-gray-600 text-sm"></i>
+    </button>
+
+    <div class="text-center mb-8">
+      <p class="font-serif text-3xl font-semibold text-brand mb-1">Welcome</p>
+      <p class="text-gray-500 text-sm font-sans">Login or create a new account</p>
+      <div class="w-10 h-px bg-brand mx-auto mt-4"></div>
+    </div>
+
+    <div class="flex bg-warm-gray rounded-full p-1 mb-7">
+      <button id="tabLogin" onclick="switchTab('login')" class="flex-1 text-xs font-medium py-2.5 rounded-full bg-brand text-white transition-all">Sign In</button>
+      <button id="tabRegister" onclick="switchTab('register')" class="flex-1 text-xs font-medium py-2.5 rounded-full text-gray-600 transition-all">Create Account</button>
+    </div>
+
+    <div id="loginForm">
+      <form id="loginFormElement" onsubmit="handleLogin(event)">
+        <div class="space-y-4">
+          <!-- FIX 3: Google Sign-In correctly sets userPhone + userName then reloads -->
+          <button type="button" class="google-btn" onclick="handleGoogleSignIn()">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Sign in with Google
+          </button>
+          <div class="or-divider">OR</div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Email</label>
+            <input id="loginEmail" type="email" placeholder="your@email.com" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Password</label>
+            <input id="loginPassword" type="password" placeholder="••••••••" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div class="flex justify-end">
+            <a href="#" class="text-xs text-brand hover:underline font-sans">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn-primary w-full bg-brand text-white text-sm font-medium tracking-wider py-3.5 rounded-full mt-2">Sign In</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="registerForm" class="hidden">
+      <form id="registerFormElement" onsubmit="handleRegister(event)">
+        <div class="space-y-4">
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Full Name</label>
+            <input id="regName" type="text" placeholder="Jane Smith" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Phone Number</label>
+            <input id="regPhone" type="tel" placeholder="+91 98765 43210" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Email</label>
+            <input id="regEmail" type="email" placeholder="your@email.com" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Delivery Address</label>
+            <textarea id="regAddress" rows="2" placeholder="Street, City, Pincode" class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all resize-none"></textarea>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-600 uppercase tracking-wider mb-1.5 block">Password</label>
+            <input id="regPassword" type="password" placeholder="Min 8 characters" minlength="8" required class="field-input w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-sans bg-warm-gray transition-all" />
+          </div>
+          <button type="submit" class="btn-primary w-full bg-brand text-white text-sm font-medium tracking-wider py-3.5 rounded-full mt-2">Create Account</button>
+          <p class="text-xs text-gray-400 font-sans text-center leading-relaxed">
+            By creating an account, you agree to our <a href="#" class="text-brand hover:underline">Terms</a> and <a href="#" class="text-brand hover:underline">Privacy Policy</a>.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     GLOWBOT AI — FAB + FULL-HEIGHT DRAWER
+═══════════════════════════════════════════════════ -->
+
+<!-- FAB -->
+<button id="chatFab" aria-label="Open GlowBot AI"
+  class="fab-btn fixed bottom-6 right-6 z-[60] w-[62px] h-[62px] bg-brand text-white rounded-full flex items-center justify-center shadow-lg">
+  <i id="fabIcon" class="fa fa-comments text-2xl"></i>
+  <span class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white animate-pulse"></span>
+</button>
+
+<!-- Scrim overlay -->
+<div id="drawerOverlay" class="fixed inset-0 z-[55] bg-black/30 backdrop-blur-[2px]"></div>
+
+<!-- GlowBot AI Side Drawer -->
+<aside id="copilotDrawer"
+  class="drawer-closed fixed top-0 right-0 z-[60] h-full bg-white shadow-2xl flex flex-col"
+  aria-label="GlowBot AI">
+
+  <div class="bg-brand px-5 py-4 flex items-center gap-3 flex-shrink-0">
+    <div class="relative flex-shrink-0">
+      <div class="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+          <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74z"/>
+          <path d="M5 3l.5 1.5L7 5l-1.5.5L5 7l-.5-1.5L3 5l1.5-.5z" fill="white" stroke="none"/>
+          <path d="M19 14l.4 1.2 1.2.4-1.2.4-.4 1.2-.4-1.2-1.2-.4 1.2-.4z" fill="white" stroke="none"/>
+        </svg>
+      </div>
+      <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-brand"></span>
+    </div>
+    <div class="flex-1 min-w-0">
+      <p class="text-white text-sm font-semibold font-serif leading-tight">GlowBot AI ✨</p>
+      <p class="text-white/70 text-[11px] font-sans mt-0.5">Your Personal Beauty Expert</p>
+    </div>
+    <button id="closeChatBtn" aria-label="Close GlowBot AI"
+      class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors flex-shrink-0">
+      <i class="fa fa-times text-white text-sm"></i>
+    </button>
+  </div>
+
+  <div class="bg-gradient-to-r from-brand/5 to-emerald-50 border-b border-brand/10 px-5 py-2 flex items-center gap-2">
+    <span class="inline-flex items-center gap-1.5 text-[10px] text-brand/60 font-sans tracking-wider">
+      <i class="fa fa-shield-heart text-[9px] text-brand/50"></i>
+      Personalised · Cruelty-Free Picks · Always Honest
+    </span>
+  </div>
+
+  <!-- Messages area -->
+  <div id="chatMessages" class="chat-messages flex-1 overflow-y-auto px-4 py-5 space-y-4 bg-warm-gray/40">
+    <!-- Static welcome message — always shown; history is appended after it -->
+    <div class="msg-bot flex items-end gap-2" id="welcomeMsg">
+      <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0">
+        <i class="fa fa-leaf text-brand text-xs"></i>
+      </div>
+      <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm max-w-[85%]">
+        <p class="text-gray-700 text-sm font-sans leading-relaxed">Hi! ✨ I'm <strong>GlowBot</strong>, your personal beauty expert. Tell me about your skin type or concern, and I'll recommend the perfect products for you.</p>
+        <p class="text-gray-400 text-[10px] font-sans mt-1.5">Just now</p>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2 pl-9" id="quickReplies">
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Dry Skin</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Oily Skin</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Anti-Ageing</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Acne-Prone</button>
+      <button onclick="sendQuickReply(this)" class="text-xs border border-brand/30 text-brand bg-white hover:bg-brand hover:text-white transition-all px-3.5 py-1.5 rounded-full font-sans font-medium">Sensitive Skin</button>
+    </div>
+  </div>
+
+  <!-- Input area -->
+  <div class="flex-shrink-0 px-4 py-4 bg-white border-t border-gray-100">
+    <div class="flex items-center gap-2">
+      <!-- GPS location pin button -->
+      <button id="gpsBtn" title="Share my location"
+        class="w-9 h-9 flex items-center justify-center rounded-full border border-brand/30 text-brand hover:bg-brand/10 transition-colors flex-shrink-0">
+        <i class="fa fa-map-marker-alt text-sm"></i>
+      </button>
+      <input id="chatInput" type="text"
+        placeholder="Ask GlowBot about your skin…"
+        class="flex-1 bg-warm-gray rounded-full px-4 py-2.5 text-sm font-sans text-gray-700 placeholder:text-gray-400 border border-transparent focus:outline-none focus:border-brand/30 focus:bg-white transition-all" />
+      <button id="chatSendBtn" onclick="sendChatMessage()"
+        class="btn-primary w-10 h-10 bg-brand text-white rounded-full flex items-center justify-center flex-shrink-0">
+        <i class="fa fa-paper-plane text-sm"></i>
+      </button>
+    </div>
+    <p class="text-center text-[10px] text-gray-400 font-sans mt-2">AI responses are for guidance only. Always patch-test new products.</p>
+  </div>
+</aside>
+
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT — SINGLE UNIFIED BLOCK
+═══════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+
+// allProducts is referenced by addToCart for product metadata lookups.
+let allProducts = [];
+
+// Cart count kept in sync with localStorage
+let cartItems = parseInt(localStorage.getItem('cartCount') || '0', 10);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FIX 1 & 2: SESSION ID
+// Computed once at page load. Used as:
+//   • thread_id in the /chat API payload (Fix 1)
+//   • key suffix for localStorage chat history (Fix 2)
+// ─────────────────────────────────────────────────────────────────────────────
+const sessionId = (() => {
+  const phone = localStorage.getItem('userPhone');
+  if (phone) return phone;
+  let guest = sessionStorage.getItem('guestSession');
+  if (!guest) {
+    guest = 'sess_' + Math.random().toString(36).slice(2, 11);
+    sessionStorage.setItem('guestSession', guest);
+  }
+  return guest;
+})();
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FIX 2: CHAT HISTORY — localStorage-backed persistence
+//
+// History is stored under the key  glowbotHistory_<sessionId>
+// so each user (or guest session) has their own isolated log.
+//
+// Schema: Array of { role: 'bot'|'user', text: string, time: string }
+// ─────────────────────────────────────────────────────────────────────────────
+const HISTORY_KEY = `glowbotHistory_${sessionId}`;
+
+function loadRawHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+  } catch (_) {
+    return [];
+  }
+}
+
+function saveRawHistory(history) {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  } catch (_) {
+    // Storage quota exceeded — fail silently; live messages still render
+  }
+}
+
+/**
+ * loadChatHistory()
+ * Reads every saved { role, text, time } entry and renders them into
+ * #chatMessages, injecting them AFTER the static welcome message and
+ * BEFORE the quick-reply chips (which get hidden once history exists).
+ *
+ * Called once when the drawer opens (first time) or on DOMContentLoaded.
+ */
+function loadChatHistory() {
+  const history = loadRawHistory();
+  if (!history.length) return; // nothing to restore
+
+  // Hide quick-reply chips — history implies user has already interacted
+  const quickReplies = document.getElementById('quickReplies');
+  if (quickReplies) quickReplies.style.display = 'none';
+
+  const container = document.getElementById('chatMessages');
+  if (!container) return;
+
+  // Insert a visual divider before restored messages so the user knows
+  // these are from a previous session
+  const divider = document.createElement('div');
+  divider.className = 'flex items-center gap-2 my-2';
+  divider.innerHTML = `
+    <div class="flex-1 h-px bg-brand/10"></div>
+    <span class="text-[9px] text-brand/40 font-sans tracking-wider uppercase whitespace-nowrap">Previous conversation</span>
+    <div class="flex-1 h-px bg-brand/10"></div>`;
+  container.appendChild(divider);
+
+  // Replay each saved message without re-saving (skipPersist = true)
+  history.forEach(entry => {
+    _renderMessage(entry.text, entry.role, entry.time, true);
+  });
+
+  // Scroll to bottom after all history is rendered
+  container.scrollTop = container.scrollHeight;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTH HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+function isLoggedIn() {
+  return !!localStorage.getItem('userPhone');
+}
+
+// FIX 3: Standardised nav label — matches cart.html / account.html format
+// Format: "Hi, Priya" when logged in, "Account" when logged out.
+function updateNavAccount() {
+  const label = document.getElementById('navAccountLabel');
+  if (!label) return;
+  const name = localStorage.getItem('userName') || '';
+  if (isLoggedIn() && name) {
+    label.textContent = 'Hi, ' + name.split(' ')[0];
+  } else {
+    label.textContent = 'Account';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MODAL
+// ─────────────────────────────────────────────────────────────────────────────
+function openModal() {
+  const modal = document.getElementById('authModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById('authModal');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+
+function switchTab(tab) {
+  const loginForm    = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const tabLogin     = document.getElementById('tabLogin');
+  const tabRegister  = document.getElementById('tabRegister');
+  if (!loginForm || !registerForm) return;
+
+  if (tab === 'login') {
+    loginForm.classList.remove('hidden');
+    registerForm.classList.add('hidden');
+    tabLogin.classList.add('bg-brand', 'text-white');
+    tabLogin.classList.remove('text-gray-600');
+    tabRegister.classList.remove('bg-brand', 'text-white');
+    tabRegister.classList.add('text-gray-600');
+  } else {
+    registerForm.classList.remove('hidden');
+    loginForm.classList.add('hidden');
+    tabRegister.classList.add('bg-brand', 'text-white');
+    tabRegister.classList.remove('text-gray-600');
+    tabLogin.classList.remove('bg-brand', 'text-white');
+    tabLogin.classList.add('text-gray-600');
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTH — loginUser()
+// ─────────────────────────────────────────────────────────────────────────────
+async function loginUser() {
+  const emailEl = document.getElementById('loginEmail');
+  const email   = emailEl ? emailEl.value.trim() : '';
+
+  if (!email) {
+    alert('Please enter your email address.');
+    return;
+  }
+
+  try {
+    const res = await fetch('http://localhost:8000/api/login', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email }),
+    });
+
+    if (res.status === 404) {
+      alert('Account not found. Please register.');
+      switchTab('register');
+      return;
+    }
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.detail || `Server error ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    if (data.success) {
+      localStorage.setItem('userPhone', data.phone_number || email);
+      if (data.name) localStorage.setItem('userName', data.name);
+      closeModal();
+      updateNavAccount();
+      window.location.reload();
+    } else {
+      throw new Error(data.message || 'Login failed.');
+    }
+
+  } catch (err) {
+    console.warn('[Auth] Login API unavailable — demo fallback active:', err.message);
+    const fallbackId = email || 'demo@thebodyshop.in';
+    localStorage.setItem('userPhone', fallbackId);
+    localStorage.setItem('userName', 'Demo User');
+    closeModal();
+    updateNavAccount();
+    window.location.reload();
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTH — registerUser()
+// ─────────────────────────────────────────────────────────────────────────────
+async function registerUser() {
+  const name     = document.getElementById('regName')     ? document.getElementById('regName').value.trim()     : '';
+  const phone    = document.getElementById('regPhone')    ? document.getElementById('regPhone').value.trim()    : '';
+  const email    = document.getElementById('regEmail')    ? document.getElementById('regEmail').value.trim()    : '';
+  const address  = document.getElementById('regAddress')  ? document.getElementById('regAddress').value.trim()  : '';
+  const password = document.getElementById('regPassword') ? document.getElementById('regPassword').value        : '';
+
+  if (!name || !phone || !email) {
+    alert('Please fill in your name, phone number, and email.');
+    return;
+  }
+  if (password.length < 8) {
+    alert('Password must be at least 8 characters long.');
+    return;
+  }
+
+  try {
+    const res = await fetch('http://localhost:8000/api/register', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ name, phone_number: phone, email, address }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      localStorage.setItem('userPhone', phone);
+      localStorage.setItem('userName',  name);
+      closeModal();
+      updateNavAccount();
+      window.location.reload();
+    } else {
+      throw new Error(data.detail || data.message || `Server error ${res.status}`);
+    }
+
+  } catch (err) {
+    console.warn('[Auth] Register API unavailable — demo fallback active:', err.message);
+    const fallbackId = phone || email || 'demo@thebodyshop.in';
+    localStorage.setItem('userPhone', fallbackId);
+    localStorage.setItem('userName', name || 'Demo User');
+    closeModal();
+    updateNavAccount();
+    window.location.reload();
+  }
+}
+
+// Legacy inline-handler aliases
+function handleLogin(e)    { if (e) e.preventDefault(); loginUser(); }
+function handleRegister(e) { if (e) e.preventDefault(); registerUser(); }
+
+// FIX 3: Google Sign-In correctly sets both userPhone AND userName, then reloads
+function handleGoogleSignIn() {
+  localStorage.setItem('userPhone', '+919999999999');
+  localStorage.setItem('userName', 'Demo User');
+  closeModal();
+  window.location.reload();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CART — addToCart(btn, productId)
+// ─────────────────────────────────────────────────────────────────────────────
+async function addToCart(btn, productId) {
+  if (!isLoggedIn()) {
+    openModal();
+    return;
+  }
+
+  const origHTML  = btn.innerHTML;
+  btn.disabled    = true;
+
+  const product = allProducts.find(p => p.product_id === productId || p.id === productId);
+
+  let name     = product ? (product.name || product.product_name || productId) : productId;
+  let price    = product ? (parseInt(product.price) || parseInt(product.selling_price) || 0) : 0;
+  let image    = product ? (product.image || product.image_url || `./products/${productId}.jpg`) : `./products/${productId}.jpg`;
+  let category = product ? (product.category || '') : '';
+
+  if (!product) {
+    const card = btn.closest('[data-category]') || btn.closest('.product-card');
+    if (card) {
+      category = card.getAttribute('data-category') || '';
+      const nameEl  = card.querySelector('a[href*="product.html"]');
+      const priceEl = card.querySelector('span.text-brand, .text-brand');
+      const imgEl   = card.querySelector('img');
+      if (nameEl)  name  = nameEl.textContent.trim() || name;
+      if (priceEl && priceEl.textContent.includes('₹'))
+        price = parseInt(priceEl.textContent.replace(/[^0-9]/g, ''), 10) || price;
+      if (imgEl)   image = imgEl.src || image;
+    }
+  }
+
+  let myCartArray = [];
+  try {
+    myCartArray = JSON.parse(localStorage.getItem('myCartArray')) || [];
+  } catch (_) {
+    myCartArray = [];
+  }
+
+  const idx = myCartArray.findIndex(i => String(i.id) === String(productId));
+  if (idx >= 0) {
+    myCartArray[idx].qty = (myCartArray[idx].qty || 1) + 1;
+  } else {
+    myCartArray.push({ id: productId, name, price, qty: 1, image, category });
+  }
+
+  localStorage.setItem('myCartArray', JSON.stringify(myCartArray));
+
+  cartItems = myCartArray.reduce((sum, i) => sum + (parseInt(i.qty) || 1), 0);
+  localStorage.setItem('cartCount', String(cartItems));
+  const badge = document.getElementById('cartCount');
+  if (badge) badge.textContent = String(cartItems);
+
+  const phone_number = localStorage.getItem('userPhone');
+  fetch('http://localhost:8000/api/add-to-cart', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify({ phone_number, product_id: productId, quantity: 1 }),
+  }).catch(() => {
+    console.info('[Cart] API add-to-cart unreachable; localStorage is source of truth.');
+  });
+
+  btn.innerHTML = '<i class="fa fa-check text-xs"></i> Added!';
+  btn.classList.add('bg-emerald-600');
+  btn.classList.remove('bg-brand');
+
+  setTimeout(() => {
+    btn.innerHTML = origHTML;
+    btn.classList.remove('bg-emerald-600');
+    btn.classList.add('bg-brand');
+    btn.disabled = false;
+  }, 1800);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GLOWBOT CHAT
+//
+// FIX 1: fetch URL changed to absolute http://localhost:8000/chat
+//         Payload: { session_id: sessionId, message: text }  — matches FastAPI
+//
+// FIX 2: appendMessage() now persists every message to localStorage.
+//         loadChatHistory() hydrates the UI from localStorage on drawer open.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * _renderMessage(text, role, time, skipPersist)
+ * Low-level render function. Creates the DOM bubble and appends it.
+ * skipPersist=true is used when replaying history so we don't double-save.
+ */
+function _renderMessage(text, role, time, skipPersist) {
+  const container = document.getElementById('chatMessages');
+  if (!container) return;
+
+  const isBot = role === 'bot';
+  const now   = time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const wrapper = document.createElement('div');
+  wrapper.className = isBot ? 'msg-bot flex items-end gap-2' : 'msg-user flex justify-end';
+
+  if (isBot) {
+    wrapper.innerHTML = `
+      <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0">
+        <i class="fa fa-leaf text-brand text-xs"></i>
+      </div>
+      <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm max-w-[85%]">
+        <p class="text-gray-700 text-sm font-sans leading-relaxed">${text}</p>
+        <p class="text-gray-400 text-[10px] font-sans mt-1.5">${now}</p>
+      </div>`;
+  } else {
+    wrapper.innerHTML = `
+      <div class="bg-brand rounded-2xl rounded-br-sm px-4 py-3 shadow-sm max-w-[85%]">
+        <p class="text-white text-sm font-sans leading-relaxed">${escHtml(text)}</p>
+        <p class="text-white/50 text-[10px] font-sans mt-1.5 text-right">${now}</p>
+      </div>`;
+  }
+
+  container.appendChild(wrapper);
+  container.scrollTop = container.scrollHeight;
+
+  // FIX 2: Persist to localStorage (skip only when replaying history)
+  if (!skipPersist) {
+    const history = loadRawHistory();
+    history.push({ role, text, time: now });
+    saveRawHistory(history);
+  }
+}
+
+/**
+ * appendMessage(text, role)
+ * Public API — called by sendChatMessage() and sendQuickReply().
+ */
+function appendMessage(text, role) {
+  _renderMessage(text, role, null, false);
+}
+
+function showTypingIndicator() {
+  const container = document.getElementById('chatMessages');
+  if (!container) return null;
+
+  const el = document.createElement('div');
+  el.id = 'typingIndicator';
+  el.className = 'msg-bot flex items-end gap-2';
+  el.innerHTML = `
+    <div class="w-7 h-7 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0">
+      <i class="fa fa-leaf text-brand text-xs"></i>
+    </div>
+    <div class="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
+      <div class="flex gap-1">
+        <span class="typing-dot w-2 h-2 bg-brand/40 rounded-full"></span>
+        <span class="typing-dot w-2 h-2 bg-brand/40 rounded-full"></span>
+        <span class="typing-dot w-2 h-2 bg-brand/40 rounded-full"></span>
+      </div>
+    </div>`;
+  container.appendChild(el);
+  container.scrollTop = container.scrollHeight;
+  return el;
+}
+
+// FIX 1: URL changed to http://localhost:8000/chat (absolute path, correct route)
+// FIX 1: Payload uses { session_id: sessionId, message: text } — matches FastAPI ChatRequest
+async function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const text  = input ? input.value.trim() : '';
+  if (!text) return;
+
+  input.value = '';
+
+  // Hide quick-reply chips after first user message
+  const quickReplies = document.getElementById('quickReplies');
+  if (quickReplies) quickReplies.style.display = 'none';
+
+  appendMessage(text, 'user');
+
+  const typingEl = showTypingIndicator();
+
+  try {
+    // FIX 1: Absolute URL to backend /chat endpoint
+    const res = await fetch('http://localhost:8000/chat', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // FIX 1: Payload matches FastAPI ChatRequest exactly
+      body:    JSON.stringify({ session_id: sessionId, message: text }),
+    });
+
+    if (typingEl) typingEl.remove();
+
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+
+    const data  = await res.json();
+    const reply = data.reply || data.message || data.response
+      || 'I am having trouble connecting right now. Please try again in a moment! ✨';
+
+    appendMessage(reply, 'bot');
+
+  } catch (err) {
+    if (typingEl) typingEl.remove();
+
+    // Mock AI fallback — works even when server is down
+    const textLower = text.toLowerCase();
+    let mockReply = "I'm having trouble reaching my server, but I highly recommend our bestselling Tea Tree range! ✨";
+    if (textLower.includes('dry') || textLower.includes('moisture')) {
+      mockReply = "For dry skin, our Vitamin E Moisture Cream or Shea Butter are intensely hydrating! 💧";
+    } else if (textLower.includes('oily') || textLower.includes('acne') || textLower.includes('pimple')) {
+      mockReply = "For oily or acne-prone skin, the Tea Tree line is an absolute lifesaver. The Tea Tree Facial Wash is a fan favorite! 🌿";
+    } else if (textLower.includes('hair') || textLower.includes('dandruff')) {
+      mockReply = "Our Ginger Scalp Care Shampoo is the #1 solution for flaky scalps. It's super soothing! 💆‍♀️";
+    } else if (textLower.includes('gift')) {
+      mockReply = "Our beautifully wrapped Gift Sets make perfect presents! Check out the British Rose collection. 🎁";
+    }
+    appendMessage(mockReply, 'bot');
+  }
+}
+
+function sendQuickReply(btn) {
+  const input = document.getElementById('chatInput');
+  if (input) input.value = btn.textContent.trim();
+  sendChatMessage();
+}
+
+function escHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SCROLL REVEAL (IntersectionObserver)
+// ─────────────────────────────────────────────────────────────────────────────
+function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GLOWBOT DRAWER
+// ─────────────────────────────────────────────────────────────────────────────
+let _historyLoaded = false; // guard — only hydrate once per page load
+
+function openDrawer() {
+  const drawer  = document.getElementById('copilotDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  const icon    = document.getElementById('fabIcon');
+  if (drawer)  { drawer.classList.remove('drawer-closed'); drawer.classList.add('drawer-open'); }
+  if (overlay) overlay.classList.add('overlay-visible');
+  if (icon)    { icon.classList.remove('fa-comments'); icon.classList.add('fa-times'); }
+  document.body.style.overflow = 'hidden';
+
+  // FIX 2: Load history the first time the drawer is opened
+  if (!_historyLoaded) {
+    _historyLoaded = true;
+    loadChatHistory();
+  }
+}
+
+function closeDrawer() {
+  const drawer  = document.getElementById('copilotDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  const icon    = document.getElementById('fabIcon');
+  if (drawer)  { drawer.classList.add('drawer-closed'); drawer.classList.remove('drawer-open'); }
+  if (overlay) overlay.classList.remove('overlay-visible');
+  if (icon)    { icon.classList.add('fa-comments'); icon.classList.remove('fa-times'); }
+  document.body.style.overflow = '';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DOM CONTENT LOADED — wire everything up
+// ─────────────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ── Cart badge init ───────────────────────────────────────────
+  const badge = document.getElementById('cartCount');
+  if (badge) badge.textContent = String(cartItems);
+
+  // ── Nav account label (FIX 3: standardised "Hi, Name" format) ─
+  updateNavAccount();
+
+  // ── Auth modal ────────────────────────────────────────────────
+  const openBtn  = document.getElementById('openAuthModal');
+  const closeBtn = document.getElementById('closeAuthModal');
+  const overlay  = document.getElementById('modalOverlay');
+
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      if (isLoggedIn()) {
+        window.location.href = 'account.html';
+      } else {
+        openModal();
+      }
+    });
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (overlay)  overlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // ── Auth form submissions ─────────────────────────────────────
+  const loginFormEl = document.getElementById('loginFormElement');
+  if (loginFormEl) loginFormEl.onsubmit = e => { e.preventDefault(); loginUser(); };
+
+  const regFormEl = document.getElementById('registerFormElement');
+  if (regFormEl) regFormEl.onsubmit = e => { e.preventDefault(); registerUser(); };
+
+  // ── Hero Carousel ─────────────────────────────────────────────
+  (function () {
+    const SLIDE_COUNT   = 3;
+    const AUTO_INTERVAL = 5000;
+    let currentSlide    = 0;
+    let autoTimer       = null;
+
+    const slides = Array.from({ length: SLIDE_COUNT }, (_, i) =>
+      document.getElementById('slide-' + i)
+    );
+    const dots = Array.from(document.querySelectorAll('.carousel-dot'));
+
+    function goTo(index) {
+      slides[currentSlide].classList.remove('active');
+      dots[currentSlide].classList.remove('active');
+      currentSlide = (index + SLIDE_COUNT) % SLIDE_COUNT;
+      slides[currentSlide].classList.add('active');
+      dots[currentSlide].classList.add('active');
+    }
+
+    function next() { goTo(currentSlide + 1); }
+    function prev() { goTo(currentSlide - 1); }
+
+    function startAuto() {
+      stopAuto();
+      autoTimer = setInterval(next, AUTO_INTERVAL);
+    }
+    function stopAuto() {
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    }
+
+    document.getElementById('carouselNext').addEventListener('click', () => { next(); startAuto(); });
+    document.getElementById('carouselPrev').addEventListener('click', () => { prev(); startAuto(); });
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => { goTo(Number(dot.dataset.index)); startAuto(); });
+    });
+
+    const carousel = document.getElementById('heroCarousel');
+    carousel.addEventListener('mouseenter', stopAuto);
+    carousel.addEventListener('mouseleave', startAuto);
+
+    let touchStartX = 0;
+    carousel.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    carousel.addEventListener('touchend', e => {
+      const delta = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(delta) > 50) { delta < 0 ? next() : prev(); startAuto(); }
+    }, { passive: true });
+
+    startAuto();
+  })();
+
+  // ── GlowBot FAB & drawer ──────────────────────────────────────
+  const fab       = document.getElementById('chatFab');
+  const closeChat = document.getElementById('closeChatBtn');
+  const drawerOv  = document.getElementById('drawerOverlay');
+  const chatInput = document.getElementById('chatInput');
+
+  if (fab) {
+    fab.addEventListener('click', () => {
+      const drawer = document.getElementById('copilotDrawer');
+      drawer && drawer.classList.contains('drawer-open') ? closeDrawer() : openDrawer();
+    });
+  }
+  if (closeChat) closeChat.addEventListener('click', closeDrawer);
+  if (drawerOv)  drawerOv.addEventListener('click', closeDrawer);
+  if (chatInput) chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendChatMessage(); });
+
+  // ── GPS Location Pin ──────────────────────────────────────────
+  const gpsBtn = document.getElementById('gpsBtn');
+  if (gpsBtn) {
+    gpsBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser.');
+        return;
+      }
+      gpsBtn.disabled = true;
+      gpsBtn.innerHTML = '<i class="fa fa-spinner fa-spin text-sm"></i>';
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude.toFixed(6);
+          const lon = pos.coords.longitude.toFixed(6);
+          const input = document.getElementById('chatInput');
+          if (input) input.value = `Find stores near Latitude: ${lat}, Longitude: ${lon}`;
+          gpsBtn.disabled = false;
+          gpsBtn.innerHTML = '<i class="fa fa-map-marker-alt text-sm"></i>';
+          sendChatMessage();
+        },
+        (err) => {
+          gpsBtn.disabled = false;
+          gpsBtn.innerHTML = '<i class="fa fa-map-marker-alt text-sm"></i>';
+          const msgs = {
+            1: 'Location access denied. Please allow location permission in your browser.',
+            2: 'Location unavailable. Please try again.',
+            3: 'Location request timed out. Please try again.',
+          };
+          alert(msgs[err.code] || 'Could not retrieve your location.');
+        },
+        { timeout: 10000, maximumAge: 60000 }
+      );
+    });
+  }
+
+  // ── Sticky navbar shadow ──────────────────────────────────────
+  window.addEventListener('scroll', () => {
+    const nb = document.getElementById('navbar');
+    if (nb) nb.style.boxShadow = window.scrollY > 40 ? '0 4px 24px rgba(0,66,54,0.10)' : '';
+  });
+
+  // ── Global Search — redirect to shop.html ─────────────────────
+  const searchEl = document.getElementById('globalSearch');
+  if (searchEl) {
+    searchEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const val = this.value.trim();
+        if (val) window.location.href = 'shop.html?search=' + encodeURIComponent(val);
+      }
+    });
+  }
+
+  // ── Scroll Reveal init ────────────────────────────────────────
+  initReveal();
+
+});
+</script>
+
+</body>
+</html>
