@@ -5,11 +5,11 @@ import chromadb
 from chromadb.config import Settings
 
 # --- Credentials ---
-MONGO_URI = "mongodb+srv://admin:YTlpyGbaaP19d7yd@cluster0.9yjkkod.mongodb.net/?appName=Cluster0"
-POSTGRES_URI = "postgresql://postgres.fogeffyukblyguegeacm:cNFSvZWkLMyBrqZY@aws-1-ap-northeast-2.pooler.supabase.com:5432/postgres"
+MONGO_URI = "XXXXX"
+POSTGRES_URI = "postgXXXXX"
 
-CHROMA_API_KEY = "ck-8qRGPiNKmnDj7j5U5a3Kvz9f3EaUg4yHGxkYunCMufe6"
-CHROMA_TENANT = "9ff71cba-e2fe-41e6-b890-4996fe2286a2"
+CHROMA_API_KEY = "cXXXXXX"
+CHROMA_TENANT = "9XXXXXXXXX"
 CHROMA_DATABASE = "omnichannel_db"
 
 print("🔍 STARTING MASTER DATABASE DIAGNOSTICS...\n")
